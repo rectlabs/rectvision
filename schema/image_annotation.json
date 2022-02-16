@@ -7,21 +7,21 @@
     "active_projects": 2,
     "projects": {
         "9d912c1c-b329-42c2-bf93-698dde1bcdfa": {
-                "01": {"image_url": "https://image1.s3.url.rectvision.png", "classes": ["ball", "car", "horse"],
+                "01": {"image_url": "https://image1.s3.url.rectvision.png", "image_height": 1080, "image_depth": 1080,  "classes": ["ball", "car", "horse"],
                 "annotation":{
                     "ball": [[14,57,23,48],[34,56,28,49],[58,38,12,34]],
                     "car": [[12,37,48,67]],
                     "horse": [[44,58,28,47], [58,38,58,28], [48,28,59,28], [18,26,24, 35], [46, 23, 45, 46]]
                 }
             },
-                "02": {"image_url": "https://image1.s3.url.rectvision.png", "classes": ["ball", "car", "horse"],
+                "02": {"image_url": "https://image1.s3.url.rectvision.png", "image_height": 1080, "image_depth": 1080, "classes": ["ball", "car", "horse"],
                     "annotation":{
                         "ball": [[14,57,23,48],[34,56,28,49],[58,38,12,34]],
                         "car": [[12,37,48,67]],
                         "horse": [[44,58,28,47], [58,38,58,28], [48,28,59,28], [18,26,24, 35], [46, 23, 45, 46]]
                 }
             },
-                "03": {"image_url": "https://image1.s3.url.rectvision.png", "classes": ["ball", "car", "horse"],
+                "03": {"image_url": "https://image1.s3.url.rectvision.png", "image_height": 1080, "image_depth": 1080, "classes": ["ball", "car", "horse"],
                     "annotation":{
                         "ball": [[14,57,23,48],[34,56,28,49],[58,38,12,34]],
                         "car": [[12,37,48,67]],
@@ -29,7 +29,7 @@
                 }
             },
 
-                "04": {"image_url": "https://image1.s3.url.rectvision.png", "classes": ["ball", "car", "horse"],
+                "04": {"image_url": "https://image1.s3.url.rectvision.png", "image_height": 1080, "image_depth": 1080, "classes": ["ball", "car", "horse"],
                     "annotation":{
                         "ball": [[14,57,23,48],[34,56,28,49],[58,38,12,34]],
                         "car": [[12,37,48,67]],
