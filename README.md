@@ -12,3 +12,5 @@ Edge Deployment on:
 * GPUs 
 * Mobile Applications - Mobile App modules
 * Drones - Drone modules
+
+`[backend api](http://164.92.64.23/api/docs/#/)`
