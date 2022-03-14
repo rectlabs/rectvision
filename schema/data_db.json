@@ -19,7 +19,13 @@
             "percentage_progress": 36,
             "number_of_classes": 3,
             "labels": ["car", "bus", "home"],
-            "trained": false,
+            "training": {
+                "trained": false,
+                "num_steps": 30,
+                "num_eval_steps": 14,
+                "batch_size": 50,
+                "sample_1_of_n_eval_examples": 10
+            },
             "project_name": "dog_vs_cat_vs_yam_vs_chick",
             "annotation_choice": "Object_detection",
             "project_days_timeline": 20,
@@ -77,7 +83,13 @@
             "percentage_progress": 40.1,
             "number_of_classes": 2,
             "labels": ["car", "bus"],
-            "trained": false,
+            "training": {
+                "trained": false,
+                "num_steps": 30,
+                "num_eval_steps": 14,
+                "batch_size": 50,
+                "sample_1_of_n_eval_examples": 10
+            },
             "project_name": "car_vs_bus",
             "annotation_choice": "Instance_segmentation_detection",
             "project_days_timeline": 50,
