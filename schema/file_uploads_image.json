@@ -5,14 +5,31 @@
     "full_name": "Admin Rectangle AI",
     "projects": {
         "9d912c1c-b329-42c2-bf93-698dde1bcdfa": {
-            "0": "https://image_url_0_jpeg.com",
-            "1": "https://image_url_1_jpeg.com",
-            "2": "https://image_url_2_jpeg.com",
-            "3": "https://image_url_3_jpeg.com",
-            "4": "https://image_url_4_jpeg.com",
-            "5": "https://image_url_5_jpeg.com",
-            "6": "https://image_url_6_jpeg.com",
-            "7": "https://image_url_7_jpeg.com"
+            "0": {"image": "https://image_url_0_jpeg.com", 
+                "annotation": {
+                    "cat": [[10,23,13, 43], [10,23,13, 43]],
+                    "dog": [[10,23,13, 43], [10,23,13, 43]],
+                }
+            },
+            "1": {"image": "https://image_url_1_jpeg.com", 
+                "annotation": {
+                    "cat": [],
+                    "dog": [],
+                }
+            },
+            "2": {"image": "https://image_url_1_jpeg.com", 
+                "annotation": {
+                    "cat": [],
+                    "dog": [],
+                }
+            },
+            "3": {"image": "https://image_url_1_jpeg.com", 
+                "annotation": {
+                    "cat": [],
+                    "dog": [],
+                }
+            }
+            
         }
 
     }
