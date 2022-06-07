@@ -7,7 +7,7 @@ import ast
 from labelme import utils
 
 
-class generate_txt():   
+class labelme_to_darknetTxt():   
     def __init__(self, label_to_id_file_path, ann_dir, out_txt_dir):
         self.label_to_id = self.read_dictionary(label_to_id_file_path)
         self.ann_dir = ann_dir
@@ -97,7 +97,7 @@ if __name__ == '__main__':
         type=str
     )
     args = parser.parse_args()
-    generate_txt(args.label_to_id_file_path, args.annotation_dir, args.output_txt_dir)
+    labelme_to_darknetTxt(args.label_to_id_file_path, args.annotation_dir, args.output_txt_dir)
 
 
     

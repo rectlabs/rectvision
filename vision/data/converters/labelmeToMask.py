@@ -7,7 +7,7 @@ import cv2
 import ast
 import PIL.Image
 
-class generate_mask():   
+class labelme_to_mask():   
     def __init__(self, label_to_colour_file_path, ann_dir, out_mask_dir):
         self.label_to_colour = self.read_dictionary(label_to_colour_file_path)
         self.ann_dir = ann_dir
@@ -95,7 +95,7 @@ if __name__ == '__main__':
         type=str
     )
     args = parser.parse_args()
-    generate_mask(args.label_to_colour_file_path, args.annotation_dir, args.output_mask_dir)
+    labelme_to_mask(args.label_to_colour_file_path, args.annotation_dir, args.output_mask_dir)
 
 
     

@@ -5,7 +5,7 @@ import os
 import glob
 
 
-class generate_txt():
+class xml_to_yoloTxt():
     def __init__(self, label_to_id_file_path, ann_dir, out_txt_dir):
         self.label_to_id = self.read_dictionary(label_to_id_file_path)
         self.ann_dir = ann_dir
@@ -79,7 +79,7 @@ if __name__ == '__main__':
         type=str
     )
     args = parser.parse_args()
-    generate_txt(args.label_to_id_file_path, args.annotation_dir, args.output_txt_dir)
+    xml_to_yoloTxt(args.label_to_id_file_path, args.annotation_dir, args.output_txt_dir)
 
 
     

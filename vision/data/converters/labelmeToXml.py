@@ -7,7 +7,7 @@ import ast
 from labelme import utils
 
 
-class generate_xml():   
+class labelme_to_xml():   
     def __init__(self, label_to_id_file_path, ann_dir, out_xml_dir, xml_template='templates\xmlTemplate.xml', database='Open Images'):
         self.label_to_id = self.read_dictionary(label_to_id_file_path)
         self.ann_dir = ann_dir
@@ -142,7 +142,7 @@ if __name__ == '__main__':
     )
     
     args = parser.parse_args()
-    generate_xml(args.label_to_id_file_path, args.annotation_dir, args.output_xml_dir, args.xml_template_path, args.database)
+    labelme_to_xml(args.label_to_id_file_path, args.annotation_dir, args.output_xml_dir, args.xml_template_path, args.database)
 
 
     

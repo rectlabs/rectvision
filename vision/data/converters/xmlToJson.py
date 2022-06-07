@@ -5,7 +5,7 @@ import os
 import glob
 
 
-class generate_json():   
+class xml_to_json():   
     def __init__(self, ann_dir, out_json_dir, shape_type='rectangle'):
         self.ann_dir = ann_dir
         self.out_json_dir = out_json_dir
@@ -91,4 +91,4 @@ if __name__ == '__main__':
         type=str 
         )
     args = parser.parse_args()
-    generate_json(args.annotation_dir, args.output_json_dir, args.shape_type)
+    xml_to_json(args.annotation_dir, args.output_json_dir, args.shape_type)

@@ -5,7 +5,7 @@ import os
 import glob
 
 
-class generate_txt():
+class xml_to_yolov3KerasTxt():
     def __init__(self, label_to_id_file_path, ann_dir, out_txt_dir):
         self.label_to_id = self.read_dictionary(label_to_id_file_path)
         self.ann_dir = ann_dir

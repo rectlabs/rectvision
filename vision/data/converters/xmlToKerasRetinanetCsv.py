@@ -6,7 +6,7 @@ import glob
 import csv
 
 
-class generate_csv():
+class xml_to_kerasRetinanetCsv():
     def __init__(self, ann_dir, out_csv_dir):
         self.ann_dir = ann_dir
         self.out_csv_dir = out_csv_dir
@@ -63,7 +63,7 @@ if __name__ == '__main__':
         type=str
     )
     args = parser.parse_args()
-    generate_csv(args.annotation_dir, args.output_csv_dir)
+    xml_to_kerasRetinanetCsv(args.annotation_dir, args.output_csv_dir)
 
 
     

@@ -6,7 +6,7 @@ import os
 import argparse
 from PIL import Image
 
-class generate_tfrecord():
+class coco_to_tfrecord():
     def __init__(self, in_coco_path, out_tfrecord_dir):
         self.in_coco_path = in_coco_path
         self.out_tfrecord_dir = out_tfrecord_dir
@@ -111,4 +111,4 @@ if __name__ == '__main__':
         type=str
     )
     args = parser.parse_args()
-    generate_tfrecord(args.in_coco_path, args.out_tfrecord_dir)
+    coco_to_tfrecord(args.in_coco_path, args.out_tfrecord_dir)

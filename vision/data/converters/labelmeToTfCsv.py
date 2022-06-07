@@ -8,7 +8,7 @@ import csv
 from labelme import utils
 
 
-class generate_csv():   
+class labelme_to_csv():   
     def __init__(self, ann_dir, out_csv_dir):
         self.ann_dir = ann_dir
         self.out_csv_dir = out_csv_dir
@@ -74,7 +74,7 @@ if __name__ == '__main__':
         type=str
     )
     args = parser.parse_args()
-    generate_csv(args.annotation_dir, args.output_csv_dir)
+    labelme_to_csv(args.annotation_dir, args.output_csv_dir)
 
 
     

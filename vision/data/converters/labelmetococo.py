@@ -9,7 +9,7 @@ import glob
 import PIL.Image
 
 
-class labelme2coco(object):
+class labelme_to_coco(object):
     def __init__(self, labelme_json=[], save_json_path="./coco.json", project_desc=""):
         """
         :param labelme_json: the list of all labelme json file paths
@@ -178,4 +178,4 @@ if __name__ == "__main__":
     )
     args = parser.parse_args()
     labelme_json = glob.glob(os.path.join(args.labelme_images, "*.json"))
-    labelme2coco(labelme_json, args.output, args.description)
+    labelme_to_coco(labelme_json, args.output, args.description)
