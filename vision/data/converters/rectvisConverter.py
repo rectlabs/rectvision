@@ -55,44 +55,6 @@ class rectvision_converter():
             os.makedirs(path)
         return path
 
-    def compress_annotations(self, zip_path):
-        #get files in folder
-        ann_directories = ['train', 'test', 'validation']
-        self.ann_file_paths = [self.label_to_id_file_path]
-        for directory in ann_directories:
-            for root, directories, files in os.walk(directory):
-                for filename in files:
-                    filepath = os.path.join(root, filename)
-                    self.ann_file_paths.append(filepath)
-
-        #write files in file_paths to a zipfile
-        with ZipFile(zip_path, 'w') as zip:
-            for file in self.ann_file_paths:
-                zip.write(file)
-        return zip_path
-
-    def upload_annotation(self):
-        #this method zips, uploads zipped annotation file to s3 and updates db url
-        #zip projects directory
-        zip_path = self.compress_annotations(zip_path='annotations.zip')
-        #post annotation to endpoint   
-        url = 'http://164.92.64.23/api/v1/upload/project/export'
-        data={'userId':self.user_id, 'projectId':self.project_id, 'fileType':'files'}
-        file = {'file': ('annotation', open(zip_path, 'rb'))}
-        response = requests.post(url, files=file, data=data)
-        if response.ok:
-            print("Upload completed successfully!")
-            print(response.text)
-        else:
-            print("Something went wrong!")
-            print(response.text)
-        #delete annotation files created
-        for path in self.ann_file_paths:
-            os.remove(path)
-        for dir in ['train', 'test', 'validation']:
-            os.removedirs(dir)
-
-    
     def generate_labelmap(self, labels, label_to_id_file_path='label2id.txt'):
         label_ids = list(range(0, len(labels)))
         label_to_id = dict(zip(labels, label_ids))
@@ -608,7 +570,12 @@ class rectvision_converter():
                 writer.writerows(image_ppt)
         print('All done!')
         
-
+# generator = GenerateAnnotation(user_id='2a8dd6e6-a0cc-47d3-bf6a-6d7fea809b2c',
+#                  project_id='9d912c1c-b329-42c2-bf93-698dde1bcdfa', export_format='labelme-json', ann_file_path=r'templates\rectAnnotation.json', 
+#                  labels=["car", "ball", "horse"], shape_type='rectangle',
+#                  xml_template = r'templates\xmlTemplate.xml', database = 'User Provided',
+#                  train_ratio=0.7, test_ratio=0.1, valid_ratio=0.2)
+# generator.upload_annotation()
 
 
     
