@@ -33,6 +33,8 @@ class Yolov5():
             yaml.dump(configs, file, default_flow_style=None)    
 
     def train(self):
+        self.setup()
+        self.create_data_config()
         self.train_model = os.path.join(self.working_dir,"yolov5/train.py")
         
         subprocess.call(["Python", self.train_model, 
