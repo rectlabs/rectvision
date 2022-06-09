@@ -20,7 +20,7 @@ class get_user_id():
         data={'email':username, 'password':password}
         response = requests.post(request_url, data=data)
         if response.ok:
-            print("Upload completed successfully!")            
+            print("Successful login!")            
             response_details = loads(response.text)['data']
             user_id = response_details["user"]["_id"]
             token = response_details["token"]
