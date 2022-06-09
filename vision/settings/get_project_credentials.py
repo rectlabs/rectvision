@@ -2,12 +2,12 @@
 import requests
 from json import loads
 
-class get_project_id():
+class get_project_credential():
     def __init__(self, project_id, token):
         self.project_id = project_id
         self.token = token
 
-    def get_project_ids(self):
+    def get_project_credential(self):
         base_url = 'http://164.92.64.23/api/v1/project/'
         request_url = base_url + self.project_id
         headers={'Authorization':self.token}
