@@ -13,3 +13,4 @@ from xmlToKerasRetinanetCsv import xml_to_kerasRetinanetCsv
 from xmlToTfCsv import xml_to_tfCsv
 from xmlToYoloTxt import xml_to_yoloTxt
 from xmlToYoloV3KerasTxt import xml_to_yolov3KerasTxt
+from xmlToCoco import xml_to_coco

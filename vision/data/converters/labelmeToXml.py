@@ -8,7 +8,7 @@ from labelme import utils
 
 
 class labelme_to_xml():   
-    def __init__(self, label_to_id_file_path, ann_dir, out_xml_dir, xml_template='templates\xmlTemplate.xml', database='Open Images'):
+    def __init__(self, label_to_id_file_path, ann_dir, out_xml_dir, xml_template=os.path.join('templates', 'xmlTemplate.xml'), database='Open Images'):
         self.label_to_id = self.read_dictionary(label_to_id_file_path)
         self.ann_dir = ann_dir
         self.out_xml_dir = out_xml_dir
@@ -72,10 +72,10 @@ class labelme_to_xml():
             out_xml_path = os.path.splitext(os.path.join(self.out_xml_dir, self.current_img_path))[0] + '.xml'
             #modify xml template
             folder = root.find('folder')
-            folder.txt = self.ann_dir
+            folder.text = self.ann_dir
 
-            fname = root.find('filemane')
-            fname.txt = self.current_img_path
+            fname = root.find('filename')
+            fname.text = self.current_img_path
 
             src = root.find('source')
             database = src.find('database')
@@ -98,7 +98,7 @@ class labelme_to_xml():
                 name.text = str(ppt[0])
 
                 pose = ET.SubElement(obj, 'pose')
-                pose.txt = 'Unspecified'
+                pose.text = 'Unspecified'
 
                 bndbox = ET.SubElement(obj, 'bndbox')
 
