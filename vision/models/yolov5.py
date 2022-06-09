@@ -3,7 +3,7 @@ import os
 import sys
 import yaml
 
-class Model():
+class Yolov5():
     def __init__(self, num_classes, img_size, batch_size, num_epochs, labels, project_name):
         self.num_classes = num_classes
         self.img_size = img_size

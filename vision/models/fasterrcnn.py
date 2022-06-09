@@ -12,14 +12,11 @@ from detectron2.engine import DefaultTrainer, DefaultPredictor
 from detectron2.evaluation import COCOEvaluator, inference_on_dataset
 from detectron2.data import build_detection_test_loader
 
-class Model():
-    def __init__(self, num_classes, img_size, batch_size, num_epochs, data_dir, labels):
+class FasterRCNN():
+    def __init__(self, num_classes, batch_size, num_epochs):
         self.num_classes = num_classes
-        self.img_size = img_size
         self.batch_size = batch_size
         self.num_epochs = num_epochs
-        self.data_dir = data_dir
-        self.labels = labels
         self.working_dir = os.path.join(os.path.dirname(__file__), 'project')      
         self.valid_annotations = os.path.join(self.working_dir,'valid/annotations.json')
         self.train_annotations = os.path.join(self.working_dir,'train/annotations.json')
