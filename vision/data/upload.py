@@ -26,7 +26,7 @@ class Upload():
         self.user_token = user_token
         self.ann_file_paths = [train_path, test_path, validation_path, label_to_id_path]
 
-        self.upload_annotation()
+        self.upload()
 
     def compress_annotations(self, zip_path):
         #write files in ann_file_paths to a zipfile
@@ -35,7 +35,7 @@ class Upload():
                 zip.write(file)
         return zip_path
 
-    def upload_annotation(self):
+    def upload(self):
         #this method zips, uploads zipped annotation file to s3 and updates db url
         #zip projects directory
         zip_path = self.compress_annotations(zip_path='annotations.zip')
