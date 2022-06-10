@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 VERSION = '0.0.1' 
 DESCRIPTION = 'Rectvision package'
-LONG_DESCRIPTION = 'This package allows the user to download and upload data to rectvision and train models'
+LONG_DESCRIPTION = 'This package allows the user to interact with the rectvision platform via code'
 
 # Setting up
 setup(
