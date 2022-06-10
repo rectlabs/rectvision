@@ -23,7 +23,7 @@ class Download():
     def __init__(self, project_id, user_token):
         self.project_id = project_id
         self.user_token = user_token
-        self.convert_data()
+        self.download()
         
     def download(self):
         #get project details from endpoint
