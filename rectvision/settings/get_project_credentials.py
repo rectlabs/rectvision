@@ -2,7 +2,7 @@
 import requests
 from json import loads
 
-class get_project_credential():
+class GetProjectCredential():
     def __init__(self, project_id, token):
         self.project_id = project_id
         self.token = token
@@ -20,3 +20,7 @@ class get_project_credential():
         else:
             print("Something went wrong! Make sure project_id and token entered are correct!")
             print(response.text)
+
+def get_project_credential(project_id, token):
+    project = GetProjectCredential(project_id, token)
+    project.get_project_credential()

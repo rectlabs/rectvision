@@ -26,8 +26,6 @@ class Upload():
         self.user_token = user_token
         self.ann_file_paths = [train_path, test_path, validation_path, label_to_id_path]
 
-        self.upload()
-
     def compress_annotations(self, zip_path):
         #write files in ann_file_paths to a zipfile
         with ZipFile(zip_path, 'w') as zip:
@@ -53,6 +51,9 @@ class Upload():
         else:
             print("Something went wrong!")
             print(response.text)
-        
+
+def download(user_id, project_id, user_token, train_path, test_path, validation_path, label_to_id_path):
+    project = Upload(user_id, project_id, user_token, train_path, test_path, validation_path, label_to_id_path)
+    project.upload()
 
         

@@ -6,7 +6,7 @@ import glob
 import csv
 
 
-class xml_to_tfCsv():
+class GenerateAnnotation():
     def __init__(self, ann_dir, out_csv_dir):
         self.ann_dir = ann_dir
         self.out_csv_dir = out_csv_dir
@@ -14,8 +14,6 @@ class xml_to_tfCsv():
         self.current_img_path = None
         self.current_img_width = 0
         self.current_img_height = 0
-
-        self.xml_to_csv()     
     
     def extract_info_from_xml(self, ann_path):
         self.ppts = []
@@ -56,20 +54,9 @@ class xml_to_tfCsv():
                 writer.writerows(self.ppts)               
         print('All done!')
         
-if __name__ == '__main__':
-    parser = argparse.ArgumentParser(
-        description='XML annotation to tensorflow object detection csv annotation files'
-    )
-    parser.add_argument('annotation_dir',
-        help='Path to directory storing the XML annotation files',
-        type=str
-    )
-    parser.add_argument('output_csv_dir',
-        help='Path to directory to store the csv files',
-        type=str
-    )
-    args = parser.parse_args()
-    xml_to_tfCsv(args.annotation_dir, args.output_csv_dir)
+def xml_to_tfCsv(ann_dir, out_csv_dir):
+    generator = GenerateAnnotation(ann_dir, out_csv_dir)
+    generator.xml_to_csv()
 
 
     

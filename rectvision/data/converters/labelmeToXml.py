@@ -7,7 +7,7 @@ import ast
 from labelme import utils
 
 
-class labelme_to_xml():   
+class GenerateAnnotation():   
     def __init__(self, label_to_id_file_path, ann_dir, out_xml_dir, xml_template=os.path.join('templates', 'xmlTemplate.xml'), database='Open Images'):
         self.label_to_id = self.read_dictionary(label_to_id_file_path)
         self.ann_dir = ann_dir
@@ -19,8 +19,6 @@ class labelme_to_xml():
         self.current_img_width = 0
         self.current_img_height = 0
         self.current_img_depth = 0
-
-        self.json_to_xml()
 
     def read_dictionary(self, dict_file_path):
         with open(dict_file_path, "r") as data:
@@ -116,34 +114,9 @@ class labelme_to_xml():
                 
         print('All done!')
         
-if __name__ == '__main__':
-    parser = argparse.ArgumentParser(
-        description='labelme json annotation to pascal VOC xml annotation files'
-    )
-    parser.add_argument('label_to_id_file_path',
-        help='Path to file containing dictionary mapping labels to IDs',
-        type=str
-    )
-    parser.add_argument('annotation_dir',
-        help='Path to directory storing the labelme json annotation files',
-        type=str
-    )
-    parser.add_argument('output_xml_dir',
-        help='Path to directory to store the xml files',
-        type=str
-    )
-    parser.add_argument('xml_template_path',
-        help='Path to xml template to use for conversion',
-        type=str
-    )
-    parser.add_argument('database',
-        help='Name of database from which images were obtained',
-        type=str
-    )
-    
-    args = parser.parse_args()
-    labelme_to_xml(args.label_to_id_file_path, args.annotation_dir, args.output_xml_dir, args.xml_template_path, args.database)
-
+def labelme_to_xml(label_to_id_file_path, ann_dir, out_xml_dir, xml_template=os.path.join('templates', 'xmlTemplate.xml'), database='Open Images'):
+    generator = GenerateAnnotation(label_to_id_file_path, ann_dir, out_xml_dir, xml_template=os.path.join('templates', 'xmlTemplate.xml'), database='Open Images')
+    generator.json_to_xml()
 
     
 

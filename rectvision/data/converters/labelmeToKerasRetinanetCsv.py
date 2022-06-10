@@ -8,14 +8,12 @@ import csv
 from labelme import utils
 
 
-class labelme_to_kerasRetinanetCsv():   
+class GenerateAnnotation():   
     def __init__(self, ann_dir, out_csv_dir):
         self.ann_dir = ann_dir
         self.out_csv_dir = out_csv_dir
         self.ppts = []
         self.current_img_path = None
-        
-        self.json_to_csv()   
     
     def extract_info_from_json(self, ann_path):
         self.ppts = []
@@ -57,20 +55,9 @@ class labelme_to_kerasRetinanetCsv():
                 
         print('All done!')
         
-if __name__ == '__main__':
-    parser = argparse.ArgumentParser(
-        description='labelme json annotation to keras RetinaNET csv annotation files'
-    )
-    parser.add_argument('annotation_dir',
-        help='Path to directory storing the labelme annotation files',
-        type=str
-    )
-    parser.add_argument('output_csv_dir',
-        help='Path to directory to store the csv annotation file',
-        type=str
-    )
-    args = parser.parse_args()
-    labelme_to_kerasRetinanetCsv(args.annotation_dir, args.output_csv_dir)
+def labelme_to_kerasRetinanetCsv(ann_dir, out_csv_dir):
+    generator = GenerateAnnotation(ann_dir, out_csv_dir)
+    generator.json_to_csv()  
 
 
     

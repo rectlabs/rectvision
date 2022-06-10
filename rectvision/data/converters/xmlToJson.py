@@ -5,15 +5,13 @@ import os
 import glob
 
 
-class xml_to_json():   
+class GenerateAnnotation():   
     def __init__(self, ann_dir, out_json_dir, shape_type='rectangle'):
         self.ann_dir = ann_dir
         self.out_json_dir = out_json_dir
         self.shape_type = shape_type
         self.ppts = []
         self.current_img_path = None
-
-        self.xml_to_json()
 
     def extract_info_from_xml(self, ann_path):
         self.ppts = []
@@ -74,21 +72,6 @@ class xml_to_json():
                 f.write(output_json)
         print('All done!')
         
-if __name__ == '__main__':
-    parser = argparse.ArgumentParser(
-        description='Pascal VOC xml annotations to json annotations'
-    )
-    parser.add_argument('annotation_dir',
-        help='Path to directory storing the xml annotation files',
-        type=str
-    )
-    parser.add_argument('output_json_dir',
-        help='Path to directory to store the json files',
-        type=str
-    )
-    parser.add_argument('shape_type', 
-        help='Type of annotation shape. Either rectangle or polygon',
-        type=str 
-        )
-    args = parser.parse_args()
-    xml_to_json(args.annotation_dir, args.output_json_dir, args.shape_type)
+def xml_to_json(ann_dir, out_json_dir, shape_type='rectangle'):
+    generator = GenerateAnnotation(ann_dir, out_json_dir, shape_type='rectangle')
+    generator.xml_to_json()
