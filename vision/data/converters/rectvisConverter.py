@@ -11,7 +11,7 @@ class rectvision_converter():
         self.user_id = user_id
         self.project_id = project_id
         self.user_token = user_token
-        self.get_db_info()
+        self.convert_data()
         
     def get_db_info(self):
         #get project details from endpoint
