@@ -4,15 +4,13 @@ import os
 import requests
 from rectvisConverterHelper import GenerateAnnotation
 
-def rectvision_converter(project_id, user_token):
+def rectvision_converter(project_id, user_token, export_format):
     #get db info
     base_url = 'http://164.92.64.23/api/v1/project/'
     request_url = base_url + project_id
     headers={'Authorization': user_token}
     response = requests.get(request_url, headers=headers)
     current_project = loads(response.text)['data']
-
-    export_format = current_project['export_format']
     annotations = current_project['annotations']
     labels = current_project['labels']
     if current_project['annotation_choice'] == 'Object_detection':
@@ -23,6 +21,7 @@ def rectvision_converter(project_id, user_token):
     
     #convert data
     GenerateAnnotation(export_format=export_format, annotations=annotations, labels=labels, shape_type=shape_type,
-                        xml_template = os.path.join('templates', 'xmlTemplate.xml'), database = 'User Provided',
-                        train_ratio=train_ratio, test_ratio=test_ratio, valid_ratio=valid_ratio)
+                       database = 'User Provided', train_ratio=train_ratio, test_ratio=test_ratio, valid_ratio=valid_ratio)
+
+    print('Annotations saved in train, test and validation folders')
 
