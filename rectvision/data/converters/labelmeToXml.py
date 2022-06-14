@@ -7,7 +7,7 @@ import ast
 from labelme import utils
 
 
-class GenerateAnnotation():   
+class LabelmeToXml():   
     def __init__(self, label_to_id_file_path, ann_dir, out_xml_dir, xml_template=os.path.join('templates', 'xmlTemplate.xml'), database='Open Images'):
         self.label_to_id = self.read_dictionary(label_to_id_file_path)
         self.ann_dir = ann_dir
@@ -19,6 +19,8 @@ class GenerateAnnotation():
         self.current_img_width = 0
         self.current_img_height = 0
         self.current_img_depth = 0
+
+        self.json_to_xml()
 
     def read_dictionary(self, dict_file_path):
         with open(dict_file_path, "r") as data:
@@ -114,9 +116,7 @@ class GenerateAnnotation():
                 
         print('All done!')
         
-def labelme_to_xml(label_to_id_file_path, ann_dir, out_xml_dir, xml_template=os.path.join('templates', 'xmlTemplate.xml'), database='Open Images'):
-    generator = GenerateAnnotation(label_to_id_file_path, ann_dir, out_xml_dir, xml_template=os.path.join('templates', 'xmlTemplate.xml'), database='Open Images')
-    generator.json_to_xml()
+
 
     
 

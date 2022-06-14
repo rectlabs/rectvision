@@ -6,7 +6,7 @@ import glob
 import numpy as np
 
 
-class GenerateAnnotation():
+class XmlToDarknetTxt():
     def __init__(self, label_to_id_file_path, ann_dir, out_txt_dir):
         self.label_to_id = self.read_dictionary(label_to_id_file_path)
         self.ann_dir = ann_dir
@@ -15,6 +15,8 @@ class GenerateAnnotation():
         self.current_img_path = None
         self.current_img_width = 0
         self.current_img_height = 0
+
+        self.xml_to_txt()
 
     def read_dictionary(self, dict_file_path):
         with open(dict_file_path, "r") as data:
@@ -73,9 +75,6 @@ class GenerateAnnotation():
                 
         print('All done!')
         
-def xml_to_darknetTxt(label_to_id_file_path, ann_dir, out_txt_dir):
-    generator = GenerateAnnotation(label_to_id_file_path, ann_dir, out_txt_dir)
-    generator.xml_to_txt()
 
 
     

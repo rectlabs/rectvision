@@ -44,6 +44,3 @@ class Download():
             print("Something went wrong! Make sure project_id and token entered are correct!")
             print(response.text)
 
-def download(project_id, user_token):
-    project = Download(project_id, user_token)
-    project.download()

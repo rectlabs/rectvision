@@ -5,13 +5,15 @@ import os
 import glob
 
 
-class GenerateAnnotation():   
+class XmlToJson():   
     def __init__(self, ann_dir, out_json_dir, shape_type='rectangle'):
         self.ann_dir = ann_dir
         self.out_json_dir = out_json_dir
         self.shape_type = shape_type
         self.ppts = []
         self.current_img_path = None
+
+        self.xml_to_json()
 
     def extract_info_from_xml(self, ann_path):
         self.ppts = []
@@ -72,6 +74,4 @@ class GenerateAnnotation():
                 f.write(output_json)
         print('All done!')
         
-def xml_to_json(ann_dir, out_json_dir, shape_type='rectangle'):
-    generator = GenerateAnnotation(ann_dir, out_json_dir, shape_type='rectangle')
-    generator.xml_to_json()
+

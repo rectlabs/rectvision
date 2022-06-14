@@ -7,7 +7,7 @@ import cv2
 import ast
 import PIL.Image
 
-class GenerateAnnotation():   
+class LabelmeToMask():   
     def __init__(self, label_to_colour_file_path, ann_dir, out_mask_dir):
         self.label_to_colour = self.read_dictionary(label_to_colour_file_path)
         self.ann_dir = ann_dir
@@ -15,6 +15,8 @@ class GenerateAnnotation():
         self.all_points = []
         self.current_labels = []
         self.current_img_path = None
+
+        self.json_to_mask()
 
     def read_dictionary(self, dict_file_path):
         with open(dict_file_path, "r") as data:
@@ -76,9 +78,6 @@ class GenerateAnnotation():
             cv2.imwrite(out_path, image)
         print('All done!')
 
-def labelme_to_mask(label_to_colour_file_path, ann_dir, out_mask_dir):
-    generator = GenerateAnnotation(label_to_colour_file_path, ann_dir, out_mask_dir)
-    generator.json_to_mask()  
 
 
 

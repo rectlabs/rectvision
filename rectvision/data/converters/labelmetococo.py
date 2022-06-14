@@ -9,7 +9,7 @@ import glob
 import PIL.Image
 
 
-class GenerateAnnotation():
+class LabelmeToCoco():
     def __init__(self, ann_dir, out_coco_dir, project_desc=""):
         """
         :param labelme_json: the list of all labelme json file paths
@@ -27,6 +27,8 @@ class GenerateAnnotation():
         self.annID = 1
         self.height = 0
         self.width = 0
+
+        self.save_json()
 
     def gen_info(self):
         self.info["description"] = self.project_desc
@@ -158,6 +160,3 @@ class GenerateAnnotation():
         json.dump(self.data_coco, open(self.save_json_path, "w"), indent=4)
 
 
-def labelme_to_coco(ann_dir, out_coco_dir, project_desc=""):
-    generator = GenerateAnnotation(ann_dir, out_coco_dir, project_desc="")
-    generator.save_json()

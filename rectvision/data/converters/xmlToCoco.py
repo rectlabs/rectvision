@@ -8,7 +8,7 @@ import glob
 from PIL import Image, ImageDraw
 
 
-class GenerateAnnotation(object):
+class XmlToCoco(object):
     def __init__(self, ann_dir, out_coco_dir, project_desc=""):
         self.xml_ann = glob.glob(os.path.join(ann_dir, "*.xml"))
         self.out_coco_dir = out_coco_dir
@@ -22,6 +22,8 @@ class GenerateAnnotation(object):
         self.annID = 1
         self.height = 0
         self.width = 0
+
+        self.save_json()
     
     def valid_path(self, path):
         isExist = os.path.exists(path)
@@ -139,6 +141,3 @@ class GenerateAnnotation(object):
         )
         json.dump(self.data_coco, open(self.save_json_path, "w"), indent=4)
 
-def xml_to_coco(ann_dir, out_coco_dir, project_desc=""):
-    generator = GenerateAnnotation(ann_dir, out_coco_dir, project_desc="")
-    generator.save_json()

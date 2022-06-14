@@ -52,8 +52,6 @@ class Upload():
             print("Something went wrong!")
             print(response.text)
 
-def download(user_id, project_id, user_token, train_path, test_path, validation_path, label_to_id_path):
-    project = Upload(user_id, project_id, user_token, train_path, test_path, validation_path, label_to_id_path)
-    project.upload()
+
 
         

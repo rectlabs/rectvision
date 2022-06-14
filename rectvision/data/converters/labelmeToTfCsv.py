@@ -8,7 +8,7 @@ import csv
 from labelme import utils
 
 
-class GenerateAnnotation():   
+class LabelmeToTfCsv():   
     def __init__(self, ann_dir, out_csv_dir):
         self.ann_dir = ann_dir
         self.out_csv_dir = out_csv_dir
@@ -16,6 +16,8 @@ class GenerateAnnotation():
         self.current_img_path = None
         self.current_img_width = 0
         self.current_img_height = 0
+
+        self.json_to_csv()
     
     def extract_info_from_json(self, ann_path):
         self.ppts = []
@@ -59,9 +61,7 @@ class GenerateAnnotation():
                 
         print('All done!')
         
-def labelme_to_tfCsv(ann_dir, out_csv_dir):
-    generator = GenerateAnnotation(ann_dir, out_csv_dir)
-    generator.json_to_csv() 
+
 
 
     

@@ -5,13 +5,15 @@ import os
 import glob
 
 
-class GenerateAnnotation():
+class XmlToYolov3KerasTxt():
     def __init__(self, label_to_id_file_path, ann_dir, out_txt_dir):
         self.label_to_id = self.read_dictionary(label_to_id_file_path)
         self.ann_dir = ann_dir
         self.out_txt_dir = out_txt_dir
         self.ppts = []
         self.current_img_path = None
+
+        self.xml_to_txt()
 
     def read_dictionary(self, dict_file_path):
         with open(dict_file_path, "r") as data:
@@ -55,9 +57,7 @@ class GenerateAnnotation():
                 
         print('All done!')
         
-def xml_to_yolov3KerasTxt(label_to_id_file_path, ann_dir, out_txt_dir):
-    generator = GenerateAnnotation(label_to_id_file_path, ann_dir, out_txt_dir)
-    generator.xml_to_txt()
+
 
 
     
