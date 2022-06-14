@@ -5,10 +5,11 @@ import requests
 from json import loads
 
 class GetUserId():
-    def __init__(self):
-        self.login()
+    def __init__(self, username = input('Enter Your Email: '), password = getpass.getpass('Enter Your Password: ')):
+        self.username = username
+        self.password = password
 
-    def login(self, username = input('Enter Your Email: '), password = getpass.getpass('Enter Your Password: ')):
+    def get_user_id(self):
         request_url = 'http://164.92.64.23/api/v1/auth/login'
         data={'email':self.username, 'password':self.password}
         response = requests.post(request_url, data=data)
