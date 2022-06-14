@@ -1,2 +1,2 @@
-from imageProcessor import ImageProcessor
-from videoProcessor import VideoProcessor
+from .imageProcessor import ImageProcessor
+from .videoProcessor import VideoProcessor
