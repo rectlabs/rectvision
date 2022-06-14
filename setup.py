@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
 
-VERSION = '0.1.0' 
+VERSION = '0.1.5' 
 DESCRIPTION = 'Rectvision package'
 LONG_DESCRIPTION = 'This package allows the user to interact with the rectvision platform via code'
 

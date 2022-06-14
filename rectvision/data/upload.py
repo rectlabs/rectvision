@@ -1,5 +1,5 @@
 #this module uploads user annotation folder (test, validation and train) as a zip file
-from s3API import s3API
+from .s3API import s3API
 from zipfile import ZipFile
 import requests
 from json import loads
