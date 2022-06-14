@@ -2,7 +2,7 @@
 from json import loads
 import os
 import requests
-from rectvisConverterHelper import GenerateAnnotation
+from .rectvisConverterHelper import GenerateAnnotation
 
 class RectvisionConverter():
     def __init__(self, project_id, user_token, export_format):

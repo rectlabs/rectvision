@@ -3,7 +3,7 @@ import cv2
 import moviepy.editor
 from moviepy.video.io.ffmpeg_tools import ffmpeg_extract_subclip
 from moviepy.video.io.VideoFileClip import VideoFileClip, AudioFileClip
-from imageProcessor import ImageProcessor
+from .imageProcessor import ImageProcessor
 
 class VideoProcessor():
     def __init__(self, video_path=None):
