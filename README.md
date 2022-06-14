@@ -14,3 +14,20 @@ Edge Deployment on:
 * Drones - Drone modules
 
 `[backend api](http://164.92.64.23/api/docs/#/)`
+
+## Installation
+Rectvision supports an installation of Python 3.6 and above. It is available on Windows, MacOS and Linux Systems.
+
+### pip (Recommended)
+To install the current `rectvision` you'll need at least Python 3.6.1. If you have an older version of Python, you will not be able to use `rectvision`.
+
+```shell
+$ pip install --upgrade rectvision
+```
+
+Alternatively, you may download the wheels from [PyPi](https://pypi.org/project/rectvision/#files)
+
+## Getting Started
+### Settings
+### Data
+### Processors
