@@ -6,7 +6,7 @@ import os
 import argparse
 from PIL import Image
 
-class coco_to_tfrecord():
+class GenerateAnnotation():
     def __init__(self, in_coco_path, out_tfrecord_dir):
         self.in_coco_path = in_coco_path
         self.out_tfrecord_dir = out_tfrecord_dir
@@ -15,8 +15,6 @@ class coco_to_tfrecord():
         self.image_paths = []
         self.categories = None
         self.images = None
-
-        self.coco_to_tfrecord()
 
     #methods to convert values to type compatible with tf.train.Example
     def _bytes_feature(self, value):
@@ -98,17 +96,6 @@ class coco_to_tfrecord():
             self.categories = [str(cat) for cat in self.categories]
             f.writelines(self.categories)
             
-if __name__ == '__main__':
-    parser = argparse.ArgumentParser(
-        description='coco annotation to tfrecords annotation files'
-    )
-    parser.add_argument('in_coco_path',
-        help='Path to the coco annotation file',
-        type=str
-    )
-    parser.add_argument('out_tfrecord_dir',
-        help='Path to directory to store the tfrecord file',
-        type=str
-    )
-    args = parser.parse_args()
-    coco_to_tfrecord(args.in_coco_path, args.out_tfrecord_dir)
+def coco_to_tfrecord(in_coco_path, out_tfrecord_dir):
+    generator = GenerateAnnotation(in_coco_path, out_tfrecord_dir)
+    generator.coco_to_tfrecord()

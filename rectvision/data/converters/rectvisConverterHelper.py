@@ -11,13 +11,12 @@ import xml.etree.ElementTree as ET
 
 
 class GenerateAnnotation():   
-    def __init__(self, export_format, annotations, labels=[], shape_type='rectangle',
-                 xml_template = 'templates/xmlTemplate.xml', database = 'User Provided',
-                 train_ratio=0.7, test_ratio=0.2, valid_ratio=0.1):
+    def __init__(self, export_format, annotations, labels=[], shape_type='rectangle', 
+                database = 'User Provided', train_ratio=0.7, test_ratio=0.2, valid_ratio=0.1):
         self.annotations = annotations
         self.export_format = export_format
         self.shape_type = shape_type
-        self.xml_template = xml_template
+        self.xml_template = os.path.join('templates', 'xmlTemplate.xml')
         self.database = database
         self.train_ratio = train_ratio
         self.test_ratio = test_ratio

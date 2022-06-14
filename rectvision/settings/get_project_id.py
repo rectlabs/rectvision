@@ -2,7 +2,7 @@
 import requests
 from json import loads
 
-class get_project_id():
+class GetProjectIds():
     def __init__(self, user_id, token):
         self.user_id = user_id
         self.token = token
@@ -20,3 +20,7 @@ class get_project_id():
         else:
             print("Something went wrong! Make sure user_id and token entered are correct!")
             print(response.text)
+
+def get_user_id(user_id, token):
+    user = GetProjectIds(user_id, token)
+    user.get_project_ids()

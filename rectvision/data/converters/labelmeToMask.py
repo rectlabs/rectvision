@@ -7,7 +7,7 @@ import cv2
 import ast
 import PIL.Image
 
-class labelme_to_mask():   
+class GenerateAnnotation():   
     def __init__(self, label_to_colour_file_path, ann_dir, out_mask_dir):
         self.label_to_colour = self.read_dictionary(label_to_colour_file_path)
         self.ann_dir = ann_dir
@@ -15,8 +15,6 @@ class labelme_to_mask():
         self.all_points = []
         self.current_labels = []
         self.current_img_path = None
-
-        self.json_to_mask()
 
     def read_dictionary(self, dict_file_path):
         with open(dict_file_path, "r") as data:
@@ -78,24 +76,10 @@ class labelme_to_mask():
             cv2.imwrite(out_path, image)
         print('All done!')
 
-if __name__ == '__main__':
-    parser = argparse.ArgumentParser(
-        description='labelme json annotation to mask images'
-    )
-    parser.add_argument('label_to_colour_file_path',
-        help='Path to file containing dictionary mapping labels to respective colours apart from black',
-        type=str
-    )
-    parser.add_argument('annotation_dir',
-        help='Path to directory storing the labelme annotation files',
-        type=str
-    )
-    parser.add_argument('output_mask_dir',
-        help='Path to directory to store the mask images',
-        type=str
-    )
-    args = parser.parse_args()
-    labelme_to_mask(args.label_to_colour_file_path, args.annotation_dir, args.output_mask_dir)
+def labelme_to_mask(label_to_colour_file_path, ann_dir, out_mask_dir):
+    generator = GenerateAnnotation(label_to_colour_file_path, ann_dir, out_mask_dir)
+    generator.json_to_mask()  
+
 
 
     

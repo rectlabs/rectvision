@@ -23,7 +23,6 @@ class Download():
     def __init__(self, project_id, user_token):
         self.project_id = project_id
         self.user_token = user_token
-        self.download()
         
     def download(self):
         #get project details from endpoint
@@ -44,3 +43,7 @@ class Download():
         else:
             print("Something went wrong! Make sure project_id and token entered are correct!")
             print(response.text)
+
+def download(project_id, user_token):
+    project = Download(project_id, user_token)
+    project.download()

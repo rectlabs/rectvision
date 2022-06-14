@@ -7,7 +7,7 @@ import ast
 from labelme import utils
 
 
-class labelme_to_darknetTxt():   
+class GenerateAnnotation():   
     def __init__(self, label_to_id_file_path, ann_dir, out_txt_dir):
         self.label_to_id = self.read_dictionary(label_to_id_file_path)
         self.ann_dir = ann_dir
@@ -16,8 +16,6 @@ class labelme_to_darknetTxt():
         self.current_img_path = None
         self.current_img_width = 0
         self.current_img_height = 0
-
-        self.json_to_txt()
 
     def read_dictionary(self, dict_file_path):
         with open(dict_file_path, "r") as data:
@@ -80,26 +78,8 @@ class labelme_to_darknetTxt():
                 
         print('All done!')
         
-if __name__ == '__main__':
-    parser = argparse.ArgumentParser(
-        description='labelme json annotation to yolo text annotation files'
-    )
-    parser.add_argument('label_to_id_file_path',
-        help='Path to file containing dictionary mapping labels to IDs',
-        type=str
-    )
-    parser.add_argument('annotation_dir',
-        help='Path to directory storing the labelme annotation files',
-        type=str
-    )
-    parser.add_argument('output_txt_dir',
-        help='Path to directory to store the text files',
-        type=str
-    )
-    args = parser.parse_args()
-    labelme_to_darknetTxt(args.label_to_id_file_path, args.annotation_dir, args.output_txt_dir)
-
-
-    
+def labelme_to_darknetTxt(label_to_id_file_path, ann_dir, out_txt_dir):
+    generator = GenerateAnnotation(label_to_id_file_path, ann_dir, out_txt_dir)
+    generator.json_to_txt()  
 
     
