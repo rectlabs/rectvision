@@ -1,2 +1,2 @@
-from download import Download
-from upload import Upload
+from .download import Download
+from .upload import Upload
