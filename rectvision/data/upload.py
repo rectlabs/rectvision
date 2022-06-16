@@ -47,6 +47,8 @@ class Upload():
             print("Upload completed successfully!")
             response_details = loads(response.text)['data']
             #extract url from response_details
+            url = response_details['imagePath']
+            print('Uploaded successfully to {}'.format(url))
             
         else:
             print("Something went wrong!")
