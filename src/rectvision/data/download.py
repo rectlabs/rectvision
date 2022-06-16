@@ -1,4 +1,4 @@
-from .s3API import s3API
+# from .s3API import s3API
 import requests
 from json import loads, dump
 
