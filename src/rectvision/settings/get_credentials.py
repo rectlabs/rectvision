@@ -17,6 +17,7 @@ class GetCredentials():
             user_id = response_details["user"]["_id"]
             token = response_details["token"]
             print('Use this user_id and token pair to validate this session: {}, {}'.format(user_id, token))
+            return user_id, token
         else:
             print("Something went wrong! Make sure email and password entered are correct!")
             print(response.text)
@@ -47,7 +48,7 @@ class GetCredentials():
             print("Project {} credentials: \n".format(project_id))            
             response_details = loads(response.text)['data']
             #extract project details from response_details
-            print(response_details)            
+            return response_details           
         else:
             print("Something went wrong! Make sure project_id and token entered are correct!")
             print(response.text)
