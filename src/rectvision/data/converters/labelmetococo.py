@@ -30,6 +30,12 @@ class LabelmeToCoco():
 
         self.save_json()
 
+    def valid_path(self, path):
+        isExist = os.path.exists(path)
+        if not isExist:
+            os.makedirs(path)
+        return path
+        
     def gen_info(self):
         self.info["description"] = self.project_desc
         date = datetime.now()
