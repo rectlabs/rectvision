@@ -10,6 +10,8 @@ class RectvisionConverter():
         self.user_token = user_token
         self.export_format = export_format
 
+        self.rectvision_converter()
+
     def rectvision_converter(self):
         #get db info
         base_url = 'http://164.92.64.23/api/v1/project/'

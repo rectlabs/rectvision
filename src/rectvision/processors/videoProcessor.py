@@ -12,7 +12,7 @@ class VideoProcessor():
             self.video = cv2.VideoCapture(video_path)
             self.imageProcessor = ImageProcessor()
 
-    def videoFLipping(self, out_video_path, flip_dir='horizontal', video=None, video_path=None):
+    def videoFlipping(self, out_video_path, flip_dir='horizontal', video=None, video_path=None):
         '''
         This method flips every frame in the video in the direction specified by flip_dir
         and writes the resulting video to out_video_path.
