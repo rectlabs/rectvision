@@ -4,6 +4,7 @@ import glob
 import os
 import argparse
 import ast
+import shutil
 
 
 class LabelmeToYolov3KerasTxt():   
@@ -58,7 +59,10 @@ class LabelmeToYolov3KerasTxt():
             for ann_path in glob.glob(os.path.join(self.ann_dir, '*.json')):
                 self.extract_info_from_json(ann_path)
                 f.writelines([self.current_img_path, ' ', ' '.join(str(','.join(str(ppt) for ppt in ppts))
-                                                                        for ppts in self.ppts), '\n'])       
+                                                                        for ppts in self.ppts), '\n']) 
+
+                #copy image from ann_dir and save to out_txt_dir
+                shutil.copy(os.path.join(self.ann_dir, self.current_img_path), self.out_txt_dir)      
                 
         print('All done!')
         

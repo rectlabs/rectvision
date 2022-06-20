@@ -1,6 +1,7 @@
 import xml.etree.ElementTree as ET
 import json
 import glob
+import shutil
 import os
 import argparse
 import ast
@@ -67,6 +68,9 @@ class LabelmeToXml():
         #iterate over all json files in self.ann_dir and extract required info from each
         for ann_path in glob.glob(os.path.join(self.ann_dir, '*.json')):
             self.extract_info_from_json(ann_path)
+
+            #copy image from ann_dir and save to out_xml_dir
+            shutil.copy(os.path.join(self.ann_dir, self.current_img_path), self.out_xml_dir)
 
             #get output xml file
             out_xml_path = os.path.splitext(os.path.join(self.out_xml_dir, self.current_img_path))[0] + '.xml'

@@ -1,6 +1,7 @@
 import numpy as np
 import json
 import glob
+import shutil
 import os
 import argparse
 import ast
@@ -71,6 +72,8 @@ class LabelmeToDarknetTxt():
         for ann_path in glob.glob(os.path.join(self.ann_dir, '*.json')):
             self.extract_info_from_json(ann_path)
 
+            #copy image from ann_dir and save to out_txt_dir
+            shutil.copy(os.path.join(self.ann_dir, self.current_img_path), self.out_txt_dir)
             #write to text file
             out_txt_path = os.path.splitext(os.path.join(self.out_txt_dir, self.current_img_path))[0] + '.txt'
             with open(out_txt_path, 'w') as f:

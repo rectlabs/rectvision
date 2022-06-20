@@ -3,6 +3,7 @@ import json
 import xml.etree.ElementTree as ET
 import os
 import glob
+import shutil
 
 
 class XmlToJson():   
@@ -52,6 +53,8 @@ class XmlToJson():
             }
             #get image info
             self.extract_info_from_xml(ann_path)
+            #copy image from ann_dir and save to out_json_dir
+            shutil.copy(os.path.join(self.ann_dir, self.current_img_path), self.out_json_dir)
             for ppt in self.ppts:
                 img_path, label, shape_type, points = ppt
                 #update imagePath

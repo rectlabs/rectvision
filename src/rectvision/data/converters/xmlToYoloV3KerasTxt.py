@@ -3,7 +3,7 @@ import xml.etree.ElementTree as ET
 import ast
 import os
 import glob
-
+import shutil
 
 class XmlToYolov3KerasTxt():
     def __init__(self, label_to_id_file_path, ann_dir, out_txt_dir):
@@ -53,7 +53,10 @@ class XmlToYolov3KerasTxt():
             for ann_path in glob.glob(os.path.join(self.ann_dir, '*.xml')):
                 self.extract_info_from_xml(ann_path)
                 f.writelines([self.current_img_path, ' ', ' '.join(str(','.join(str(ppt) for ppt in ppts))
-                                                                        for ppts in self.ppts), '\n'])       
+                                                                        for ppts in self.ppts), '\n'])     
+
+                #copy image from ann_dir and save to out_txt_dir
+                shutil.copy(os.path.join(self.ann_dir, self.current_img_path), self.out_txt_dir)  
                 
         print('All done!')
         

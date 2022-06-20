@@ -3,6 +3,7 @@ import xml.etree.ElementTree as ET
 import ast
 import os
 import glob
+import shutil
 
 
 class XmlToYoloTxt():
@@ -52,7 +53,10 @@ class XmlToYoloTxt():
         self.out_txt_dir = self.valid_path(self.out_txt_dir)
         for ann_path in glob.glob(os.path.join(self.ann_dir, '*.xml')):
             self.extract_info_from_xml(ann_path)
-
+            
+            #copy image from ann_dir and save to out_txt_dir
+            shutil.copy(os.path.join(self.ann_dir, self.current_img_path), self.out_txt_dir)
+            
             #write to text file
             out_txt_path = os.path.splitext(os.path.join(self.out_txt_dir, self.current_img_path))[0] + '.txt'
             with open(out_txt_path, 'w') as f:
