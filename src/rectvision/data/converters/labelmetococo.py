@@ -1,6 +1,7 @@
 import os
 import argparse
 import json
+import shutil
 
 from labelme import utils
 from datetime import datetime
@@ -15,7 +16,8 @@ class LabelmeToCoco():
         :param labelme_json: the list of all labelme json file paths
         :param save_json_path: the path to save new json
         """
-        self.labelme_json = glob.glob(os.path.join(ann_dir, "*.json"))
+        self.ann_dir = ann_dir
+        self.labelme_json = glob.glob(os.path.join(self.ann_dir, "*.json"))
         self.out_coco_dir = out_coco_dir
         self.save_json_path = os.path.join(self.valid_path(self.out_coco_dir), 'coco.json')
         self.project_desc = project_desc
@@ -154,6 +156,12 @@ class LabelmeToCoco():
         data_coco["categories"] = self.categories
         return data_coco
 
+    def copy_images(self):
+        for path in os.listdir(self.ann_dir):
+            if not path.endswith(".json"):
+                # Copy image to out_coco_dir
+                shutil.copy(os.path.join(self.ann_dir, path), self.out_coco_dir)
+
     def save_json(self):
         print("save coco json")
         self.data_transfer()
@@ -164,5 +172,5 @@ class LabelmeToCoco():
             os.path.dirname(os.path.abspath(self.save_json_path)), exist_ok=True
         )
         json.dump(self.data_coco, open(self.save_json_path, "w"), indent=4)
-
+        self.copy_images()
 

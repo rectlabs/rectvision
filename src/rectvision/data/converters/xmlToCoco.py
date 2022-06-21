@@ -1,5 +1,6 @@
 import os
 import argparse
+import shutil
 import xml.etree.ElementTree as ET
 import json
 from datetime import datetime
@@ -10,7 +11,8 @@ from PIL import Image, ImageDraw
 
 class XmlToCoco(object):
     def __init__(self, ann_dir, out_coco_dir, project_desc=""):
-        self.xml_ann = glob.glob(os.path.join(ann_dir, "*.xml"))
+        self.ann_dir = ann_dir
+        self.xml_ann = glob.glob(os.path.join(self.ann_dir, "*.xml"))
         self.out_coco_dir = out_coco_dir
         self.save_json_path = os.path.join(self.valid_path(self.out_coco_dir), 'coco.json')
         self.project_desc = project_desc
@@ -130,6 +132,12 @@ class XmlToCoco(object):
         data_coco["categories"] = self.categories
         return data_coco
 
+    def copy_images(self):
+        for path in os.listdir(self.ann_dir):
+            if not path.endswith(".xml"):
+                # Copy image to out_coco_dir
+                shutil.copy(os.path.join(self.ann_dir, path), self.out_coco_dir)
+
     def save_json(self):
         print("save coco json")
         self.data_transfer()
@@ -140,4 +148,5 @@ class XmlToCoco(object):
             os.path.dirname(os.path.abspath(self.save_json_path)), exist_ok=True
         )
         json.dump(self.data_coco, open(self.save_json_path, "w"), indent=4)
+        self.copy_images()
 
