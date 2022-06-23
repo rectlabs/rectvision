@@ -6,7 +6,7 @@ import random
 import detectron2
 from detectron2 import model_zoo
 from detectron2.config import get_cfg
-from detectron2.util.logger import setup_logger
+from detectron2.utils.logger import setup_logger
 from detectron2.data.datasets import register_coco_instances
 from detectron2.engine import DefaultTrainer, DefaultPredictor
 from detectron2.evaluation import COCOEvaluator, inference_on_dataset
