@@ -13,17 +13,23 @@ from detectron2.evaluation import COCOEvaluator, inference_on_dataset
 from detectron2.data import build_detection_test_loader
 
 class MaskRCNN():
-    def __init__(self, num_classes, batch_size, num_epochs):
+    def __init__(self, num_classes, batch_size, num_epochs, project_dir):
         self.num_classes = num_classes
         self.batch_size = batch_size
         self.num_epochs = num_epochs
-        self.working_dir = os.path.join(os.path.dirname(__file__), 'project')      
-        self.valid_annotations = os.path.join(self.working_dir,'valid/annotations.json')
-        self.train_annotations = os.path.join(self.working_dir,'train/annotations.json')
-        self.test_annotations = os.path.join(self.working_dir, 'test/annotations.json')
-        self.valid_images = os.path.join(self.working_dir,'valid/images')
-        self.train_images = os.path.join(self.working_dir,'train/images')
-        self.test_images = os.path.join(self.working_dir, 'test/images')
+        self.project_dir = self.valid_path(project_dir)
+        self.valid_annotations = os.path.join(self.project_dir,'valid/annotations.json')
+        self.train_annotations = os.path.join(self.project_dir,'train/annotations.json')
+        self.test_annotations = os.path.join(self.project_dir, 'test/annotations.json')
+        self.valid_images = os.path.join(self.project_dir,'valid/images')
+        self.train_images = os.path.join(self.project_dir,'train/images')
+        self.test_images = os.path.join(self.project_dir, 'test/images')
+
+    def valid_path(self, path):
+        isExist = os.path.exists(path)
+        if not isExist:
+            os.makedirs(path)
+        return path
 
     def register_data(self):
         for data_category, dataset in {'train_data':[self.train_annotations, self.train_images], 

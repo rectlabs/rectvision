@@ -2,20 +2,29 @@ import subprocess
 import os
 import sys
 import yaml
+import shutil
 
 class Yolov5():
-    def __init__(self, num_classes, img_size, batch_size, num_epochs, labels, project_name):
+    def __init__(self, num_classes, img_size, batch_size, num_epochs, labels, project_name, project_dir):
         self.num_classes = num_classes
         self.img_size = img_size
         self.batch_size = batch_size
         self.num_epochs = num_epochs
         self.labels = labels
         self.project_name = project_name
-        self.working_dir = os.path.dirname(__file__)
+        self.project_dir = self.valid_path(project_dir)
+
+    def valid_path(self, path):
+        isExist = os.path.exists(path)
+        if not isExist:
+            os.makedirs(path)
+        return path
 
     def setup(self):
-        self.git_clone("https://github.com/ultralytics/yolov5")
-        os.chdir(os.path.join(self.working_dir, "yolov5"))
+        # self.git_clone("https://github.com/ultralytics/yolov5")
+        #copy to yolov5 in project_dir
+        # shutil.copytree('yolov5', os.path.join(self.project_dir, 'yolov5'))
+        os.chdir(os.path.join(self.project_dir, "yolov5"))
         subprocess.check_call([sys.executable, "-m", "pip", "install", "-r", "requirements.txt"])
 
     def git_clone(self, url):
@@ -28,14 +37,14 @@ class Yolov5():
                    "nc": self.num_classes,
                    "names": self.labels
                   }
-        self.data_yaml = os.path.join(self.working_dir, "yolov5/data", "data.yaml")
+        self.data_yaml = os.path.join(self.project_dir, "yolov5/data", "data.yaml")
         with open(self.data_yaml, "w") as file:
             yaml.dump(configs, file, default_flow_style=None)    
 
     def train(self):
         self.setup()
         self.create_data_config()
-        self.train_model = os.path.join(self.working_dir,"yolov5/train.py")
+        self.train_model = os.path.join(self.project_dir, "yolov5/train.py")
         
         subprocess.call(["Python", self.train_model, 
                         "--img", str(self.img_size),
@@ -48,8 +57,8 @@ class Yolov5():
                         "--workers", "24",
                         "--name", self.project_name])
     def get_map(self):
-        self.test_model = os.path.join(self.working_dir,"yolov5/test.py")
-        self.model_weights = os.path.join(self.working_dir,"yolov5/runs/train", self.project_name, "weights/best.pt")
+        self.test_model = os.path.join(self.project_dir, "yolov5/test.py")
+        self.model_weights = os.path.join(self.project_dir, "yolov5/runs/train", self.project_name, "weights/best.pt")
         subprocess.call(["Python", self.test_model,
                         "--weights", self.model_weights,
                         "--data", self.data_yaml,
@@ -58,11 +67,10 @@ class Yolov5():
                         "--name", "yolo_det"])
 
     
-# num_classes, img_size, batch_size, num_epochs, labels, project_name = 3, 512, 2, 2, ["displeased", "laughing", "neutral"], "test_project"
-# model = Model(num_classes, img_size, batch_size, num_epochs, labels, project_name)
-# model.setup()
-# model.create_data_config()
+# project_dir = r"C:\Users\sanni\Documents\rectangleai\rectvision\test_yolo"
+# num_classes, img_size, batch_size, num_epochs, labels, project_name, project_dir = 3, 512, 2, 2, ["displeased", "laughing", "neutral"], "test_project", project_dir
+# model = Yolov5(num_classes, img_size, batch_size, num_epochs, labels, project_name, project_dir)
+
 # model.train()
-    
         
 
