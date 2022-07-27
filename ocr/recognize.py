@@ -9,9 +9,9 @@ pytesseract.pytesseract.tesseract_cmd = "/usr/local/Cellar/tesseract/5.2.0/bin/t
 
 tessdata_dir_config = r'--tessdata-dir "/usr/local/Cellar/tesseract/5.2.0/share/tessdata"'
 
-class TextAnnotate():
+class TextRecognizer():
     '''
-    Recognize texts in pdfs and Images
+    Recognize and extract texts in pdfs and Images
     '''
     def __init__(self, pdf_path:str=None, img_path:str=None):
         self.pdf_path = pdf_path
@@ -54,13 +54,13 @@ if __name__ == '__main__':
 
         with open(outfilename, 'w', encoding="utf-8") as f:
             if file.endswith(".pdf"):
-                annote = TextAnnotate(pdf_path=file)
-                f.write(annote.recognize_pdf())
+                recognise = TextRecognizer(pdf_path=file)
+                f.write(recognise.recognize_pdf())
                 f.close()
-                
+
             elif file.endswith((".jpg", ".jpeg", ".png")):
-                annote = TextAnnotate(img_path=file)
-                f.write(annote.recognize_img())
+                recognise = TextRecognizer(img_path=file)
+                f.write(recognise.recognize_img())
                 f.close()
 
     
