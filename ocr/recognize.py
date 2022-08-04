@@ -5,9 +5,9 @@ import argparse
 from preprocess import pdf2img
 
 
-pytesseract.pytesseract.tesseract_cmd = "/usr/local/Cellar/tesseract/5.2.0/bin/tesseract"
+# pytesseract.pytesseract.tesseract_cmd = "/usr/bin/tesseract"
 
-tessdata_dir_config = r'--tessdata-dir "/usr/local/Cellar/tesseract/5.2.0/share/tessdata"'
+# tessdata_dir_config = r'--tessdata-dir "/usr/share/tesseract-ocr/4.00/tessdata"'
 
 class TextRecognizer():
     '''
@@ -21,14 +21,17 @@ class TextRecognizer():
     def recognize_pdf(self):
         self.image_of_pdf = pdf2img(self.pdf_path)
         extractedInformation = pytesseract.image_to_string(
-            self.image_of_pdf, lang="eng", config=tessdata_dir_config)
+            self.image_of_pdf, lang="eng")
+        
+        # extractedInformation = pytesseract.image_to_string(
+        #     self.image, lang="eng", config=tessdata_dir_config)
         
         return extractedInformation
 
     def recognize_img(self):
         self.image = cv2.imread(self.img_path)
         extractedInformation = pytesseract.image_to_string(
-            self.image, lang="eng", config=tessdata_dir_config)
+            self.image, lang="eng")
 
         return extractedInformation
 
@@ -61,6 +64,10 @@ if __name__ == '__main__':
             elif file.endswith((".jpg", ".jpeg", ".png")):
                 recognise = TextRecognizer(img_path=file)
                 f.write(recognise.recognize_img())
+                f.close()
+
+            else:
+                print('Sorry, this file type is not supported. \nExpected file format is ".pdf", ".jpg", ".jpeg", or ".png"')
                 f.close()
 
     
