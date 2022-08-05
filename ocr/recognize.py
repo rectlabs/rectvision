@@ -39,36 +39,39 @@ class TextRecognizer():
 if __name__ == '__main__':
 
     parser = argparse.ArgumentParser()
-    parser.add_argument(
-        "--file_path",
-        help="the location where the .pdf, .jpg, .jpeg, or .png file is saved"
-    )
+    try:
+        parser.add_argument(
+            "--file_path",
+            help="the location where the .pdf, .jpg, .jpeg, or .png file is saved"
+        )
 
-    args = parser.parse_args()
+        args = parser.parse_args()
 
-    file = args.file_path
+        file = args.file_path
 
-    if file==None:
-        print("This command is not recognised. Run this instead:\
-        \n\npython recognize.py --file_path <path to file>\n")
+        if file==None:
+            print("Expected command:\npython recognize.py --file_path <path to file>\n")
 
-    else:
-        outfilename = file.split('.')[0]+'.txt'
+        else:
+            outfilename = file.split('.')[0]+'.txt'
 
-        with open(outfilename, 'w', encoding="utf-8") as f:
-            if file.endswith(".pdf"):
-                recognise = TextRecognizer(pdf_path=file)
-                f.write(recognise.recognize_pdf())
-                f.close()
+            with open(outfilename, 'w', encoding="utf-8") as f:
+                if file.endswith(".pdf"):
+                    recognise = TextRecognizer(pdf_path=file)
+                    f.write(recognise.recognize_pdf())
+                    f.close()
 
-            elif file.endswith((".jpg", ".jpeg", ".png")):
-                recognise = TextRecognizer(img_path=file)
-                f.write(recognise.recognize_img())
-                f.close()
+                elif file.endswith((".jpg", ".jpeg", ".png")):
+                    recognise = TextRecognizer(img_path=file)
+                    f.write(recognise.recognize_img())
+                    f.close()
 
-            else:
-                print('Sorry, this file type is not supported. \nExpected file format is ".pdf", ".jpg", ".jpeg", or ".png"')
-                f.close()
+                else:
+                    print('Sorry, this file type is not supported. \nExpected file format is ".pdf", ".jpg", ".jpeg", or ".png"')
+                    f.close()
+
+    except:
+        print("Expected command:\npython recognize.py --file_path <path to file>\n")
 
     
             
