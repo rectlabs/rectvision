@@ -1,0 +1,118 @@
+{
+	id
+	account_type
+	plan_id
+	first_name
+	last_name
+	email
+	image_url
+	hashed_password
+	verified -- boolean
+
+	created_at - date (in ISO format)
+	updated_at - date (in ISO format)
+	verified_at - date (in ISO format)
+	
+	access_token
+	access_token_expires_at - date (in ISO format)
+
+	email_token <--- used for account verification and password reset
+	email_token_expires_at - date (in ISO format)
+	
+	total_project_count
+	active_project_count
+	
+	projects[]
+		id
+		owner_id
+
+        name
+        annotation_choice
+        timeline_in_days
+        augument_data - bool
+        expended_days
+        
+        augumentation
+            - image_flipping
+            - image_rotation
+            - grey_scaling
+            - zoom_angle
+            - brightness
+
+        training
+            status [pending | ongoing | completed | failed]
+            config
+                - batch_size
+                - epoch
+                - train_size
+                - test_size
+                - validation_size
+                - gpu_choice
+                - model_choice
+            result
+                - accuracy_level
+                - last_updated_at - date (in ISO format)
+                - stats
+                    [day_a]: 
+                        - metric_a
+                        - metric_b
+                    [day_b]: 
+                        - metric_a
+                        - metric_b
+                - models[]
+                    - id
+                    - filename
+                    - url
+                    - filesize
+
+        labels[]
+            - id
+            - value
+            - color
+            - annotation_count <-- could be computed
+        
+        files[]
+            - id
+            - url
+            - type ---- [image | video | text | ...]
+            - meta
+                - width (for image type)
+                - height (for image type)
+                - duration (for video type, just as an example)
+            - labels[] <-- this could be computed from the annotations
+                - label_id <-- references project-level label
+                - annotation_count
+            - annotations[]
+                - id
+                - label_id <-- use for a virtual label field
+                - creator_id
+                - points/vertices
+                - created_at - date (in ISO format)
+                - updated_at - date (in ISO format)
+
+        total_file_count
+        annotated_file_count
+        unannotated_file_count
+        label_count
+        annotation_count
+        annotation_progress
+
+        collaborators[]
+            - user_id <--- references the user record
+            - role [editor | viewer]
+            - annotated_file_count
+            - annotation_count
+            - invitation_status [pending | accepted]
+        
+        assets
+            - zipped_files_url
+            - annotations_url
+        
+        created_at - date (in ISO format)
+        updated_at - date (in ISO format)
+	}
+	
+	collaborators[] <--- this can be computed for data integrity
+        - user_id
+        - assigned_project_count
+}
