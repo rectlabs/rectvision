@@ -110,7 +110,6 @@
         
         created_at - date (in ISO format)
         updated_at - date (in ISO format)
-	}
 	
 	collaborators[] <--- this can be computed for data integrity
         - user_id
