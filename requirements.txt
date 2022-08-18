@@ -1,6 +1,8 @@
 boto3==1.22.9
 botocore==1.25.9
 dtw==1.4.0
+PyJWT==2.4.0
+pyton-dotenv==0.19.2
 h5py==3.1.0
 imageio-ffmpeg==0.4.7
 imgviz==1.5.0

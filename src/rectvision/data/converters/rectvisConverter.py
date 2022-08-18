@@ -1,22 +1,33 @@
 #this script gets project's annotation and call conversion script to convert to specified format.
 from json import loads
 import os
+import jwt
+from dotenv import load_dotenv
 import requests
 from .rectvisConverterHelper import GenerateAnnotation
 
 class RectvisionConverter():
-    def __init__(self, project_id, user_token, export_format):
-        self.project_id = project_id
-        self.user_token = user_token
+    def __init__(self, token, train_split, test_split, validation_split, export_format):
+        load_dotenv()
+        self.token = token
         self.export_format = export_format
-
+        self.train_split = train_split
+        self.test_split = test_split
+        self.validation_split = validation_split
+        self.user_id, self.project_id, self.user_token = self.get_creds()
         self.rectvision_converter()
+    
+    def get_creds(self):
+        key = os.getenv('JWT_KEY')
+        creds = jwt.decode(self.token, key, algorithm = "HS256")['payload']
+        user_id, project_id, user_token = creds['user_id'], creds['projectId'], creds['token']
+        return user_id, project_id, user_token
 
-    def get_db_info(self, project_id, user_token):
+    def get_db_info(self):
         #get project details from get-a-project endpoint
         base_url = 'https://backend.app.rectvision.com/api/v1/projects/'
-        request_url = base_url + project_id
-        headers={'Authorization':user_token}
+        request_url = base_url + self.project_id
+        headers={'Authorization':self.user_token}
         response = requests.get(request_url, headers=headers)
         current_project = loads(response.text)['data']['project']
 
@@ -27,11 +38,11 @@ class RectvisionConverter():
 
         return labels, shape_type       
 
-    def get_annotations(self, project_id, user_token):
+    def get_annotations(self):
         #get annotations from endpoint
         base_url = 'https://backend.app.rectvision.com/api/v1/projects/'
-        request_url = base_url + project_id + '/annotations?limit=1000000000'
-        headers={'Authorization':user_token}
+        request_url = base_url + self.project_id + '/annotations?limit=1000000000'
+        headers={'Authorization':self.user_token}
         response = requests.get(request_url, headers=headers)
         annotations = loads(response.text)['data']['annotations']
 
@@ -55,23 +66,11 @@ class RectvisionConverter():
         return rearranged_annotations
 
     def rectvision_converter(self):
-        #get db info
-        base_url = 'http://164.92.64.23/api/v1/project/'
-        request_url = base_url + self.project_id
-        headers={'Authorization': self.user_token}
-        response = requests.get(request_url, headers=headers)
-        current_project = loads(response.text)['data']
-        annotations = current_project['annotations']
-        labels = current_project['labels']
-        if current_project['annotation_choice'] == 'Object_detection':
-            shape_type = 'rectangle'
-        train_ratio = current_project['training']['train_split']
-        test_ratio = current_project['training']['test_split']
-        valid_ratio = current_project['training']['validation_split']
-        
+        labels, shape_type = self.get_db_info()
+        rearranged_annotations = self.get_annotations()        
         #convert data
-        GenerateAnnotation(export_format=self.export_format, annotations=annotations, labels=labels, shape_type=shape_type,
-                        database = 'User Provided', train_ratio=train_ratio, test_ratio=test_ratio, valid_ratio=valid_ratio)
+        GenerateAnnotation(export_format=self.export_format, annotations=rearranged_annotations, labels=labels, shape_type=shape_type,
+                        database = 'User Provided', train_ratio=self.train_split, test_ratio=self.test_split, valid_ratio=self.validation_split)
 
-        print('Annotations saved in train, test and validation folders!')
+        print('Annotations saved to results directory in the current working directory')
 
