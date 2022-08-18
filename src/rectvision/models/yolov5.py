@@ -22,7 +22,7 @@ class Yolov5():
 
     def setup(self):
         # self.git_clone("https://github.com/ultralytics/yolov5")
-        #copy to yolov5 in project_dir
+        # # copy to yolov5 in project_dir
         # shutil.copytree('yolov5', os.path.join(self.project_dir, 'yolov5'))
         os.chdir(os.path.join(self.project_dir, "yolov5"))
         subprocess.check_call([sys.executable, "-m", "pip", "install", "-r", "requirements.txt"])
@@ -46,25 +46,19 @@ class Yolov5():
         self.create_data_config()
         self.train_model = os.path.join(self.project_dir, "yolov5/train.py")
         
-        subprocess.call(["Python", self.train_model, 
-                        "--img", str(self.img_size),
-                        "--cfg", "yolov5s.yaml",
-                        "--hyp", "hyp.scratch-low.yaml",
-                        "--batch", str(self.batch_size),
-                        "--epochs", str(self.num_epochs),
-                        "--data", self.data_yaml,
-                        "--weights", "yolov5s.pt",
-                        "--workers", "24",
-                        "--name", self.project_name])
+        !python {self.train_model} --img {self.img_size} --cfg yolov5s.yaml --hyp hyp.scratch-low.yaml --batch {self.batch_size} --epochs {self.num_epochs} --data {self.data_yaml} --weights yolov5s.pt --workers 24 --name {self.project_name}
+        
     def get_map(self):
-        self.test_model = os.path.join(self.project_dir, "yolov5/test.py")
+        self.test_model = os.path.join(self.project_dir, "yolov5/val.py")
         self.model_weights = os.path.join(self.project_dir, "yolov5/runs/train", self.project_name, "weights/best.pt")
-        subprocess.call(["Python", self.test_model,
-                        "--weights", self.model_weights,
-                        "--data", self.data_yaml,
-                        "--task", "test",
-                        "--workers", "24",
-                        "--name", "yolo_det"])
+        !python {self.test_model} --weights {self.model_weights} --data {self.data_yaml} --task test --name {self.project_name + '_performance'}
+            
+    def inference(self, images, confidence, out_dir):
+      self.detect_model = os.path.join(self.project_dir, "yolov5/detect.py")
+      self.model_weights = os.path.join(self.project_dir, "yolov5/runs/train", self.project_name, "weights/best.pt")
+      !python {self.detect_model} --source {images} --weights {self.model_weights} --conf {confidence} --name {self.project_name + '_detections'}
+      
+      shutil.copytree(os.path.join(self.project_dir, "yolov5/runs/detect", self.project_name+'_detections'), out_dir)
 
     
 # project_dir = r"C:\Users\sanni\Documents\rectangleai\rectvision\test_yolo"
