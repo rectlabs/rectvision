@@ -8,7 +8,7 @@ class GetCredentials():
         self.password = password
 
         #login
-        request_url = 'http://164.92.64.23/api/v1/auth/login'
+        request_url = 'https://backend.app.rectvision.com/api/v1/auth/login'
         data={'email':self.username, 'password':self.password}
         self.login_response = requests.post(request_url, data=data)
 
@@ -21,36 +21,35 @@ class GetCredentials():
 
     def get_user_id(self):                           
         response_details = loads(self.login_response.text)['data']
-        user_id = response_details["user"]["_id"]
+        user_id = response_details["id"]
         token = response_details["token"]
         print('Use this user_id and token pair to validate this session: {}, {}'.format(user_id, token))
         return user_id, token        
 
-    def get_project_ids(self, user_id, token):
-        base_url = 'http://164.92.64.23/api/v1/project/all/'
-        request_url = base_url + user_id
+    def get_project_ids(self, token):
+        request_url = 'https://backend.app.rectvision.com/api/v1/projects'
         headers={'Authorization':token}
         response = requests.get(request_url, headers=headers)
         if response.ok:
             print("Projects and their respective ids: \n")            
-            response_details = loads(response.text)['data']
+            response_details = loads(response.text)['data']['projects']
             #extract project details from response_details
             for project in response_details:
                 project_name = project['name']
-                project_id = project['_id']
+                project_id = project['id']
                 print('Project Name: {}    Project ID: {}'.format(project_name, project_id))            
         else:
-            print("Something went wrong! Make sure user_id and token entered are correct!")
+            print("Something went wrong! Make sure runtime token entered is correct!")
             print(response.text)
 
     def get_project_credential(self, project_id, token):
-        base_url = 'http://164.92.64.23/api/v1/project/'
+        base_url = 'https://backend.app.rectvision.com/api/v1/projects/'
         request_url = base_url + project_id
         headers={'Authorization':token}
         response = requests.get(request_url, headers=headers)
         if response.ok:
             print("Project {} credentials: \n".format(project_id))            
-            response_details = loads(response.text)['data']
+            response_details = loads(response.text)['data']['project']
             #extract project details from response_details
             return response_details           
         else:
