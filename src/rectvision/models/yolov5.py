@@ -21,9 +21,9 @@ class Yolov5():
         return path
 
     def setup(self):
-        # self.git_clone("https://github.com/ultralytics/yolov5")
-        # # copy to yolov5 in project_dir
-        # shutil.copytree('yolov5', os.path.join(self.project_dir, 'yolov5'))
+        self.git_clone("https://github.com/ultralytics/yolov5")
+        # copy to yolov5 in project_dir
+        shutil.copytree('yolov5', os.path.join(self.project_dir, 'yolov5'))
         os.chdir(os.path.join(self.project_dir, "yolov5"))
         subprocess.check_call([sys.executable, "-m", "pip", "install", "-r", "requirements.txt"])
 
