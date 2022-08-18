@@ -10,6 +10,7 @@ from detectron2.utils.logger import setup_logger
 from detectron2.data.datasets import register_coco_instances
 from detectron2.engine import DefaultTrainer, DefaultPredictor
 from detectron2.evaluation import COCOEvaluator, inference_on_dataset
+from detectron2.data.catalog import MetadataCatalog
 from detectron2.data import build_detection_test_loader
 
 class MaskRCNN():
@@ -69,7 +70,10 @@ class MaskRCNN():
         predictor = DefaultPredictor(self.model_cfg)
         evaluator = COCOEvaluator("test_data", output_dir="./output")
         val_loader = build_detection_test_loader(self.model_cfg, "test_data")
-        return inference_on_dataset(predictor.model, val_loader, evaluator)
+        inference_on_dataset(predictor.model, val_loader, evaluator)
+        #get metadata for id_to_label mapping
+        test_metadata = MetadataCatalog.get("test_data")
+        return predictor, test_metadata
 
 
 
