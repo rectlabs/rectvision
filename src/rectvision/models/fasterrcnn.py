@@ -74,6 +74,20 @@ class FasterRCNN():
         test_metadata = MetadataCatalog.get("test_data")
         return predictor, test_metadata
 
+    def predict(self, image, predictor, metadata):
+        outputs = predictor(image)
+        boxes = outputs["instances"].pred_boxes.tensor.cpu().numpy()
+        classes = outputs["instances"].pred_classes.cpu().numpy()
+        scores = outputs["instances"].scores.cpu().numpy()
+        labels = metadata.thing_classes
+        # pred_masks = outputs['instances'].pred_masks.cpu().numpy()
+        bbox = []
+        for (box, class_id, score) in zip(boxes.astype(np.float64), classes, scores):
+            x0, y0, x1, y1 = box #top left, bottom right
+            bbox.append([x0,y0,x1,y1, score, class_id, labels[class_id]])
+
+        return bbox
+
 
 
 
