@@ -19,7 +19,7 @@ class RectvisionConverter():
     
     def get_creds(self):
         key = os.getenv('JWT_KEY')
-        creds = jwt.decode(self.token, key, algorithm = "HS256")['payload']
+        creds = jwt.decode(self.token, key, algorithms = "HS256")['payload']
         user_id, project_id, user_token = creds['user_id'], creds['projectId'], creds['token']
         return user_id, project_id, user_token
 
