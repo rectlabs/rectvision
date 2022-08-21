@@ -75,7 +75,7 @@ class Yolov5():
       subprocess.call(["python", self.detect_model, 
                         "--source", images,
                         "--weights", self.model_weights,
-                        "--conf", confidence,
+                        "--conf", str(confidence),
                         "--name", self.project_name + '_detections'])
     #   !python {self.detect_model} --source {images} --weights {self.model_weights} --conf {confidence} --name {self.project_name + '_detections'}
       
