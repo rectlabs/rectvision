@@ -1,15 +1,14 @@
 #this script gets project's annotation and call conversion script to convert to specified format.
 from json import loads
 import os
+import getpass
 import jwt
-from dotenv import load_dotenv
 import requests
 from .rectvisConverterHelper import GenerateAnnotation
 
 class RectvisionConverter():
-    def __init__(self, token, train_split, test_split, validation_split, export_format):
-        load_dotenv()
-        self.token = token
+    def __init__(self, train_split, test_split, validation_split, export_format):        
+        self.token = getpass.getpass('Enter Token: ')
         self.export_format = export_format
         self.train_split = train_split
         self.test_split = test_split
@@ -18,8 +17,10 @@ class RectvisionConverter():
         self.rectvision_converter()
     
     def get_creds(self):
-        key = os.getenv('JWT_KEY')
-        creds = jwt.decode(self.token, key, algorithms = "HS256")['payload']
+        base_url = 'https://backend.app.rectvision.com/api/v1/projects/decode-token?token='
+        request_url = base_url + self.token
+        response = requests.get(request_url)
+        creds = loads(response.text)['data']['decoded']
         user_id, project_id, user_token = creds['user_id'], creds['projectId'], creds['token']
         return user_id, project_id, user_token
 
