@@ -145,7 +145,9 @@ class GenerateAnnotation():
             if self.export_format == 'labelme-json':
                 for idx, point in enumerate(points):
                     label = labels[idx]
-                    x_min, y_min, x_max, y_max = point[0][0], point[2][1], point[2][0], point[0][1]
+                    point_x = [coord[0] for coord in point]
+                    point_y = [coord[1] for coord in point]
+                    x_min, y_min, x_max, y_max = min(point_x), min(point_y), max(point_x), max(point_y)
                     image_ppts.append([current_img_path, label, self.shape_type, [[x_min, y_min], [x_max, y_max]]])
                 self.ppts.append(image_ppts)
                 
@@ -154,7 +156,9 @@ class GenerateAnnotation():
                 for idx, point in enumerate(points):
                     label = labels[idx]
                     label_id = self.label_to_id[label]
-                    x_min, y_min, x_max, y_max = point[0][0], point[2][1], point[2][0], point[0][1]
+                    point_x = [coord[0] for coord in point]
+                    point_y = [coord[1] for coord in point]
+                    x_min, y_min, x_max, y_max = min(point_x), min(point_y), max(point_x), max(point_y)
                     width, height = x_max - x_min, y_max - y_min
                     x_center, y_center,  = x_min + (width/2), y_min + (height/2)
                     image_ppts.append([current_img_path, label_id, 
@@ -169,7 +173,9 @@ class GenerateAnnotation():
                 for idx, point in enumerate(points):
                     label = labels[idx]
                     label_id = self.label_to_id[label]
-                    x_min, y_min, x_max, y_max = point[0][0], point[2][1], point[2][0], point[0][1]
+                    point_x = [coord[0] for coord in point]
+                    point_y = [coord[1] for coord in point]
+                    x_min, y_min, x_max, y_max = min(point_x), min(point_y), max(point_x), max(point_y)
                     width, height = x_max - x_min, y_max - y_min
                     image_ppts.append([current_img_path, label_id, x_min, y_min, width, height, '\n' ])
                 self.ppts.append(image_ppts)
@@ -178,14 +184,18 @@ class GenerateAnnotation():
                 for idx, point in enumerate(points):
                     label = labels[idx]
                     label_id = self.label_to_id[label]
-                    x_min, y_min, x_max, y_max = point[0][0], point[2][1], point[2][0], point[0][1]
+                    point_x = [coord[0] for coord in point]
+                    point_y = [coord[1] for coord in point]
+                    x_min, y_min, x_max, y_max = min(point_x), min(point_y), max(point_x), max(point_y)
                     image_ppts.append([current_img_path, x_min, y_min, x_max, y_max, label_id])
                 self.ppts.append(image_ppts)
             
             elif self.export_format == 'xml':
                 for idx, point in enumerate(points):
                     label = labels[idx]
-                    x_min, y_min, x_max, y_max = point[0][0], point[2][1], point[2][0], point[0][1]
+                    point_x = [coord[0] for coord in point]
+                    point_y = [coord[1] for coord in point]
+                    x_min, y_min, x_max, y_max = min(point_x), min(point_y), max(point_x), max(point_y)
                     image_ppts.append([current_img_path, current_img_width, 
                                         current_img_height, current_img_depth,
                                         label, self.shape_type, x_min, x_max, y_min, y_max])
@@ -194,7 +204,9 @@ class GenerateAnnotation():
             elif self.export_format == 'keras-retinanet-csv':
                 for idx, point in enumerate(points):
                     label = labels[idx]
-                    x_min, y_min, x_max, y_max = point[0][0], point[2][1], point[2][0], point[0][1]
+                    point_x = [coord[0] for coord in point]
+                    point_y = [coord[1] for coord in point]
+                    x_min, y_min, x_max, y_max = min(point_x), min(point_y), max(point_x), max(point_y)
                     image_ppts.append([current_img_path, x_min, y_min, x_max, y_max, label])
                 self.ppts.append(image_ppts)
 
@@ -202,21 +214,15 @@ class GenerateAnnotation():
                 for idx, point in enumerate(points):
                     label = labels[idx]
                     label_id = self.label_to_id[label]
-                    x_min, y_min, x_max, y_max = point[0][0], point[2][1], point[2][0], point[0][1]
+                    point_x = [coord[0] for coord in point]
+                    point_y = [coord[1] for coord in point]
+                    x_min, y_min, x_max, y_max = min(point_x), min(point_y), max(point_x), max(point_y)
                     image_ppts.append([current_img_path, label,
                                         current_img_width, current_img_height,
                                         x_min, y_min, x_max, y_max])
                 self.ppts.append(image_ppts)
 
-                                     
-
-
-    def pointsTobbox(self, points):
-        '''This method converts the points array to the properties of the object's bounding box'''
-        x_min, y_min = points[0], points[1] - points[3]
-        x_max, y_max = points[0] + points[3], points[1]
-        return [[x_min, y_min], [x_max, y_max]]
-
+       
     def valid_path(self, path):
         isExist = os.path.exists(path)
         if not isExist:
