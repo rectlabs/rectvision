@@ -18,7 +18,6 @@ class GenerateAnnotation():
         self.annotations = annotations
         self.export_format = export_format
         self.shape_type = shape_type
-        self.xml_template = os.path.join('templates', 'xmlTemplate.xml')
         self.database = database
         self.train_ratio = train_ratio
         self.test_ratio = test_ratio
@@ -453,13 +452,20 @@ class GenerateAnnotation():
                                                                 for ppts in image_ppt), '\n'])
         print('All done!') 
 
+    def get_xml_template(self):
+        request_url = 'https://rectvision.s3.amazonaws.com/xmlTemplate.xml'
+        response = requests.get(request_url)
+        open('template.xml', 'wb').write(response.content)
+
     def rectjson_to_xml(self):
+        #get template
+        self.get_xml_template()
         print('Starting conversion...')
         #get all image info
         self.extract_info_from_json()
         #split to train, test, validation
         self.ppts_train, self.ppts_test, self.ppts_valid = self.split(self.ppts, self.train_ratio, self.test_ratio, self.valid_ratio)
-        tree = ET.parse(self.xml_template)
+        tree = ET.parse('template.xml')
         root = tree.getroot()
         for image_ppt in self.ppts_train:
             #download image
@@ -703,11 +709,5 @@ class GenerateAnnotation():
                 writer.writerows(image_ppt)
         print('All done!')
         
-# generator = GenerateAnnotation(user_id='2a8dd6e6-a0cc-47d3-bf6a-6d7fea809b2c',
-#                  project_id='9d912c1c-b329-42c2-bf93-698dde1bcdfa', export_format='labelme-json', ann_file_path=r'templates\rectAnnotation.json', 
-#                  labels=["car", "ball", "horse"], shape_type='rectangle',
-#                  xml_template = r'templates\xmlTemplate.xml', database = 'User Provided',
-#                  train_ratio=0.7, test_ratio=0.1, valid_ratio=0.2)
-# generator.upload_annotation() 
 
     
