@@ -67,7 +67,7 @@ class Yolov5():
                         "--task", "test",
                         "--name", self.project_name + '_performance'])
         # !python {self.test_model} --weights {self.model_weights} --data {self.data_yaml} --task test --name {self.project_name + '_performance'}
-        print('Check {} for results'.format(os.path.join(self.project_dir, "yolov5/runs/test", self.project_name+'_performance')))
+        print('Check {} for results'.format(os.path.join(self.project_dir, "yolov5/runs/val", self.project_name+'_performance')))
 
     def inference(self, images, confidence, out_dir):
       self.detect_model = os.path.join(self.project_dir, "yolov5/detect.py")
