@@ -177,7 +177,9 @@ class GenerateAnnotation():
                     point_y = [coord[1] for coord in point]
                     x_min, y_min, x_max, y_max = min(point_x), min(point_y), max(point_x), max(point_y)
                     width, height = x_max - x_min, y_max - y_min
-                    image_ppts.append([current_img_path, label_id, x_min, y_min, width, height, '\n' ])
+                    x_center, y_center,  = x_min + (width/2), y_min + (height/2)
+                    image_ppts.append([current_img_path, label_id, x_center/current_img_width, 
+                                       y_center/current_img_height, width/current_img_width, height/current_img_height, '\n' ])
                 self.ppts.append(image_ppts)
 
             elif self.export_format == 'yolov3-keras-txt':
