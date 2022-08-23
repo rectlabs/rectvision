@@ -1,7 +1,3 @@
----
-sidebar_position: 1
----
-
 # RectVision
 
 ##  Welcome to the RectVision Package!

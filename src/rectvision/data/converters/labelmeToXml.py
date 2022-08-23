@@ -2,6 +2,7 @@ import xml.etree.ElementTree as ET
 import json
 import glob
 import shutil
+import requests
 import os
 import argparse
 import ast
@@ -9,11 +10,10 @@ from labelme import utils
 
 
 class LabelmeToXml():   
-    def __init__(self, label_to_id_file_path, ann_dir, out_xml_dir, xml_template=os.path.join('templates', 'xmlTemplate.xml'), database='Open Images'):
+    def __init__(self, label_to_id_file_path, ann_dir, out_xml_dir, database='User Provided'):
         self.label_to_id = self.read_dictionary(label_to_id_file_path)
         self.ann_dir = ann_dir
         self.out_xml_dir = out_xml_dir
-        self.xml_template = xml_template
         self.database = database
         self.ppts = []
         self.current_img_path = None
@@ -22,6 +22,11 @@ class LabelmeToXml():
         self.current_img_depth = 0
 
         self.json_to_xml()
+
+    def get_xml_template(self):
+        request_url = 'https://rectvision.s3.amazonaws.com/xmlTemplate.xml'
+        response = requests.get(request_url)
+        open('template.xml', 'wb').write(response.content)
 
     def read_dictionary(self, dict_file_path):
         with open(dict_file_path, "r") as data:
@@ -60,8 +65,9 @@ class LabelmeToXml():
         return path
 
     def json_to_xml(self):
+        self.get_xml_template()
         print('Starting conversion...')
-        tree = ET.parse(self.xml_template)
+        tree = ET.parse('template.xml')
         root = tree.getroot()
         #checkk validity of output text dir and create one if it doesn't exist
         self.out_xml_dir = self.valid_path(self.out_xml_dir)

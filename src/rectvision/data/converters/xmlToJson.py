@@ -7,10 +7,10 @@ import shutil
 
 
 class XmlToJson():   
-    def __init__(self, ann_dir, out_json_dir, shape_type='rectangle'):
+    def __init__(self, ann_dir, out_json_dir):
         self.ann_dir = ann_dir
         self.out_json_dir = out_json_dir
-        self.shape_type = shape_type
+        self.shape_type = 'rectangle'
         self.ppts = []
         self.current_img_path = None
 
