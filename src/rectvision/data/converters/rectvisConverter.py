@@ -15,6 +15,7 @@ class RectvisionConverter():
         while not self.login_response.ok:
             print("Something went wrong! Ensure the right token was entered!")
             self.token = getpass.getpass('Enter Token: ')
+            request_url = base_url + self.token
             self.login_response = requests.get(request_url)
         print('User Authenticated!')
         self.export_format = export_format
