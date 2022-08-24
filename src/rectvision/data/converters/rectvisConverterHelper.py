@@ -3,6 +3,7 @@ from zipfile import ZipFile
 from pathlib import Path
 import json
 import random
+import base64
 import glob
 import requests
 import shutil
@@ -258,6 +259,7 @@ class GenerateAnnotation():
                 img_path, label, shape_type, points = ppt
                 #update imagePath
                 output_json_dict['imagePath']=img_path
+                output_json_dict['imageData']=base64.b64encode(open(img_path, "rb").read())
                 #shapes info
                 shapes_info = {
                     'label':'',
@@ -288,6 +290,7 @@ class GenerateAnnotation():
                 img_path, label, shape_type, points = ppt
                 #update imagePath
                 output_json_dict['imagePath']=img_path
+                output_json_dict['imageData']=base64.b64encode(open(img_path, "rb").read())
                 #shapes info
                 shapes_info = {
                     'label':'',
@@ -318,6 +321,7 @@ class GenerateAnnotation():
                 img_path, label, shape_type, points = ppt
                 #update imagePath
                 output_json_dict['imagePath']=img_path
+                output_json_dict['imageData']=base64.b64encode(open(img_path, "rb").read())
                 #shapes info
                 shapes_info = {
                     'label':'',
