@@ -9,6 +9,14 @@ from .rectvisConverterHelper import GenerateAnnotation
 class RectvisionConverter():
     def __init__(self, train_split, test_split, validation_split, export_format):        
         self.token = getpass.getpass('Enter Token: ')
+        base_url = 'https://backend.app.rectvision.com/api/v1/projects/decode-token?token='
+        request_url = base_url + self.token
+        self.login_response = requests.get(request_url)
+        while not self.login_response.ok:
+            print("Something went wrong! Ensure the right token was entered!")
+            self.token = getpass.getpass('Enter Token: ')
+            self.login_response = requests.get(request_url)
+        print('User Authenticated!')
         self.export_format = export_format
         self.train_split = train_split
         self.test_split = test_split
@@ -17,10 +25,7 @@ class RectvisionConverter():
         self.rectvision_converter()
     
     def get_creds(self):
-        base_url = 'https://backend.app.rectvision.com/api/v1/projects/decode-token?token='
-        request_url = base_url + self.token
-        response = requests.get(request_url)
-        creds = loads(response.text)['data']['decoded']
+        creds = loads(self.login_response.text)['data']['decoded']
         user_id, project_id, user_token = creds['user_id'], creds['projectId'], creds['token']
         return user_id, project_id, user_token
 
