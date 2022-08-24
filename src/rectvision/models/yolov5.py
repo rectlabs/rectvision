@@ -25,15 +25,23 @@ class Yolov5():
         # copy to yolov5 in project_dir
         shutil.copytree('yolov5', os.path.join(self.project_dir, 'yolov5'))
         os.chdir(os.path.join(self.project_dir, "yolov5"))
-        subprocess.check_call([sys.executable, "-m", "pip", "install", "-r", "requirements.txt"])
+        subprocess.run([sys.executable, "-m", "pip", "install", "-r", "requirements.txt"])
 
     def git_clone(self, url):
-        subprocess.check_output(["git",  "clone", url])
+        process = subprocess.run(["git", "clone", url], capture_output=True, text=True)
+        if process.returncode == 0:
+          print('Cloned Yolov5 repo')
+        else:
+          print('Something went wrong')
+          print(process.stderr)
     
     def create_data_config(self):
-        configs = {"train": "../dataset/train/images",
-                   "val": "../dataset/valid/images",
-                   "test": "../dataset/test/images",
+        train_path = os.path.join(self.project_dir, "dataset/train/images")
+        test_path = os.path.join(self.project_dir, "dataset/train/images")
+        val_path = os.path.join(self.project_dir, "dataset/train/images")
+        configs = {"train": train_path,
+                   "val": val_path,
+                   "test": test_path,
                    "nc": self.num_classes,
                    "names": self.labels
                   }
@@ -45,7 +53,8 @@ class Yolov5():
         self.setup()
         self.create_data_config()
         self.train_model = os.path.join(self.project_dir, "yolov5/train.py")
-        subprocess.call(["python", self.train_model, 
+        print('Training YOLOv5 Model...')
+        process = subprocess.run(["python", self.train_model, 
                         "--img", str(self.img_size),
                         "--cfg", "yolov5s.yaml",
                         "--hyp", "hyp.scratch-low.yaml",
@@ -54,33 +63,57 @@ class Yolov5():
                         "--data", self.data_yaml,
                         "--weights", "yolov5s.pt",
                         "--workers", "24",
-                        "--name", self.project_name])
+                        "--name", self.project_name,
+                        "--cache"], capture_output=True, text=True)
         # !python {self.train_model} --img {self.img_size} --cfg yolov5s.yaml --hyp hyp.scratch-low.yaml --batch {self.batch_size} --epochs {self.num_epochs} --data {self.data_yaml} --weights yolov5s.pt --workers 24 --name {self.project_name}
-        print('Check {} for training logs'.format(os.path.join(self.project_dir, "yolov5/runs/train", self.project_name)))
+        if process.returncode == 0:
+          print('Trained successfully!') 
+          print(process.stdout)         
+          print('Check {} for training logs'.format(os.path.join(self.project_dir, "yolov5/runs/train", self.project_name)))
+          print('More importantly, Check {} for progression of training performance'.format(os.path.join(self.project_dir, "yolov5/runs/train", self.project_name, '/results.csv')))
+        else:
+          print('Training could not be completed. Check error below for more details')
+          print(process.stderr)
 
     def get_map(self):
         self.test_model = os.path.join(self.project_dir, "yolov5/val.py")
         self.model_weights = os.path.join(self.project_dir, "yolov5/runs/train", self.project_name, "weights/best.pt")
-        subprocess.call(["python", self.test_model, 
+        print('Evaluation in progress...')
+        process = subprocess.run(["python", self.test_model, 
                         "--weights", self.model_weights,
                         "--data", self.data_yaml,
                         "--task", "test",
-                        "--name", self.project_name + '_performance'])
+                        "--name", self.project_name + '_performance'], capture_output=True, text=True)
         # !python {self.test_model} --weights {self.model_weights} --data {self.data_yaml} --task test --name {self.project_name + '_performance'}
-        print('Check {} for results'.format(os.path.join(self.project_dir, "yolov5/runs/val", self.project_name+'_performance')))
+        if process.returncode == 0:
+          print('Evaluated successfully!') 
+          print(process.stdout)         
+          print('Check {} for results'.format(os.path.join(self.project_dir, "yolov5/runs/val", self.project_name+'_performance')))
+        else:
+          print('Evaluation could not be completed. Check error below for more details')
+          print(process.stderr)
+        
 
     def inference(self, images, confidence, out_dir):
       self.detect_model = os.path.join(self.project_dir, "yolov5/detect.py")
       self.model_weights = os.path.join(self.project_dir, "yolov5/runs/train", self.project_name, "weights/best.pt")
-      subprocess.call(["python", self.detect_model, 
+      print('Inference in progress...')
+      process = subprocess.run(["python", self.detect_model, 
                         "--source", images,
                         "--weights", self.model_weights,
                         "--conf", str(confidence),
-                        "--name", self.project_name + '_detections'])
+                        "--name", self.project_name + '_detections',
+                        "--save-txt"], capture_output=True, text=True)
     #   !python {self.detect_model} --source {images} --weights {self.model_weights} --conf {confidence} --name {self.project_name + '_detections'}
+      if process.returncode == 0:
+          print('Inference completed successfully!') 
+          print(process.stdout)         
+          shutil.copytree(os.path.join(self.project_dir, "yolov5/runs/detect", self.project_name+'_detections'), out_dir)
+          print('Check {} and {} for detections and annotations generated'.format(os.path.join(self.project_dir, "yolov5/runs/train", self.project_name+'_detections'), out_dir))
+      else:
+          print('Inference could not be completed. Check error below for more details')
+          print(process.stderr)
       
-      shutil.copytree(os.path.join(self.project_dir, "yolov5/runs/detect", self.project_name+'_detections'), out_dir)
-      print('Check {} and {} for detections'.format(os.path.join(self.project_dir, "yolov5/runs/train", self.project_name+'_detections'), out_dir))
 
     
 # project_dir = r"C:\Users\sanni\Documents\rectangleai\rectvision\test_yolo"
