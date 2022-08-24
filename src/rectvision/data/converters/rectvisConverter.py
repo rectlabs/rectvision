@@ -26,7 +26,7 @@ class RectvisionConverter():
     
     def get_creds(self):
         creds = loads(self.login_response.text)['data']['decoded']
-        user_id, project_id, user_token = creds['user_id'], creds['projectId'], creds['token']
+        user_id, project_id, user_token = creds['user_id'], creds['project_id'], creds['token']
         return user_id, project_id, user_token
 
     def get_db_info(self):
