@@ -82,6 +82,7 @@ class MaskRCNN():
         return predictor, test_metadata
 
     def predict(self, image, predictor, metadata):
+        image = cv2.imread(image)
         outputs = predictor(image)
         boxes = outputs["instances"].pred_boxes.tensor.cpu().numpy()
         classes = outputs["instances"].pred_classes.cpu().numpy()

@@ -27,6 +27,10 @@ class Yolov5():
         os.chdir(os.path.join(self.project_dir, "yolov5"))
         subprocess.run([sys.executable, "-m", "pip", "install", "-r", "requirements.txt"])
 
+    def no_setup(self):
+        os.chdir(os.path.join(self.project_dir, "yolov5"))
+        subprocess.run([sys.executable, "-m", "pip", "install", "-r", "requirements.txt"])
+
     def git_clone(self, url):
         process = subprocess.run(["git", "clone", url], capture_output=True, text=True)
         if process.returncode == 0:
@@ -51,6 +55,32 @@ class Yolov5():
 
     def train(self):
         self.setup()
+        self.create_data_config()
+        self.train_model = os.path.join(self.project_dir, "yolov5/train.py")
+        print('Training YOLOv5 Model...')
+        process = subprocess.run(["python", self.train_model, 
+                        "--img", str(self.img_size),
+                        "--cfg", "yolov5s.yaml",
+                        "--hyp", "hyp.scratch-low.yaml",
+                        "--batch", str(self.batch_size),
+                        "--epochs", str(self.num_epochs),
+                        "--data", self.data_yaml,
+                        "--weights", "yolov5s.pt",
+                        "--workers", "24",
+                        "--name", self.project_name,
+                        "--cache"], capture_output=True, text=True)
+        # !python {self.train_model} --img {self.img_size} --cfg yolov5s.yaml --hyp hyp.scratch-low.yaml --batch {self.batch_size} --epochs {self.num_epochs} --data {self.data_yaml} --weights yolov5s.pt --workers 24 --name {self.project_name}
+        if process.returncode == 0:
+          print('Trained successfully!') 
+          print(process.stdout)         
+          print('Check {} for training logs'.format(os.path.join(self.project_dir, "yolov5/runs/train", self.project_name)))
+          print('More importantly, Check {} for progression of training performance'.format(os.path.join(self.project_dir, "yolov5/runs/train", self.project_name, '/results.csv')))
+        else:
+          print('Training could not be completed. Check error below for more details')
+          print(process.stderr)
+      
+    def train_file_exists(self):
+        self.no_setup()
         self.create_data_config()
         self.train_model = os.path.join(self.project_dir, "yolov5/train.py")
         print('Training YOLOv5 Model...')
