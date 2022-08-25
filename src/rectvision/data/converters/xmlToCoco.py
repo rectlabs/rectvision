@@ -159,7 +159,3 @@ class XmlToCoco(object):
         )
         json.dump(self.data_coco, open(self.save_json_path, "w"), indent=4, cls=NpEncoder)
         self.copy_images()
-
-ann_dir = r'C:\Users\sanni\Downloads\test_xml\annotations'
-out_coco_dir = r'C:\Users\sanni\Downloads\test_xml'
-XmlToCoco(ann_dir, out_coco_dir, project_desc="")

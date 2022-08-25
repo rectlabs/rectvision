@@ -6,12 +6,22 @@ import random
 import base64
 import glob
 import requests
+import labelme
 import shutil
 import os
 import csv
 import ast
 import xml.etree.ElementTree as ET
 
+class NpEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, np.integer):
+            return int(obj)
+        if isinstance(obj, np.floating):
+            return float(obj)
+        if isinstance(obj, np.ndarray):
+            return obj.tolist()
+        return json.JSONEncoder.default(self, obj)
 
 class GenerateAnnotation():   
     def __init__(self, export_format, annotations, labels=[], shape_type='rectangle', 
@@ -259,7 +269,8 @@ class GenerateAnnotation():
                 img_path, label, shape_type, points = ppt
                 #update imagePath
                 output_json_dict['imagePath']=img_path
-                output_json_dict['imageData']=base64.b64encode(open(img_path, "rb").read())
+                data = labelme.LabelFile.load_image_file(os.path.join(self.train_path, 'images'))
+                output_json_dict['imageData']=base64.b64encode(data).decode('utf-8')
                 #shapes info
                 shapes_info = {
                     'label':'',
@@ -275,7 +286,7 @@ class GenerateAnnotation():
             train_out_annotation_dir = self.valid_path(os.path.join(self.train_path, 'annotations'))
             out_annotation_path = os.path.join(train_out_annotation_dir, self.replace_extension(image_ppt[0][0], '.json'))
             with open(out_annotation_path, 'w') as f:
-                output_json = json.dumps(output_json_dict, indent=4)
+                output_json = json.dumps(output_json_dict, indent=4, cls=NpEncoder)
                 f.write(output_json)
         for image_ppt in self.ppts_test:
             #download image
@@ -290,7 +301,8 @@ class GenerateAnnotation():
                 img_path, label, shape_type, points = ppt
                 #update imagePath
                 output_json_dict['imagePath']=img_path
-                output_json_dict['imageData']=base64.b64encode(open(img_path, "rb").read())
+                data = labelme.LabelFile.load_image_file(os.path.join(self.test_path, 'images'))
+                output_json_dict['imageData']=base64.b64encode(data).decode('utf-8')
                 #shapes info
                 shapes_info = {
                     'label':'',
@@ -306,7 +318,7 @@ class GenerateAnnotation():
             test_out_annotation_dir = self.valid_path(os.path.join(self.test_path, 'annotations'))
             out_annotation_path = os.path.join(test_out_annotation_dir, self.replace_extension(image_ppt[0][0], '.json'))
             with open(out_annotation_path, 'w') as f:
-                output_json = json.dumps(output_json_dict, indent=4)
+                output_json = json.dumps(output_json_dict, indent=4, cls=NpEncoder)
                 f.write(output_json)
         for image_ppt in self.ppts_valid:
             #download image
@@ -321,7 +333,8 @@ class GenerateAnnotation():
                 img_path, label, shape_type, points = ppt
                 #update imagePath
                 output_json_dict['imagePath']=img_path
-                output_json_dict['imageData']=base64.b64encode(open(img_path, "rb").read())
+                data = labelme.LabelFile.load_image_file(os.path.join(self.validation_path, 'images'))
+                output_json_dict['imageData']=base64.b64encode(data).decode('utf-8')
                 #shapes info
                 shapes_info = {
                     'label':'',
@@ -337,7 +350,7 @@ class GenerateAnnotation():
             validation_out_annotation_dir = self.valid_path(os.path.join(self.validation_path, 'annotations'))
             out_annotation_path = os.path.join(validation_out_annotation_dir, self.replace_extension(image_ppt[0][0], '.json'))
             with open(out_annotation_path, 'w') as f:
-                output_json = json.dumps(output_json_dict, indent=4)
+                output_json = json.dumps(output_json_dict, indent=4, cls=NpEncoder)
                 f.write(output_json)
         print('All done!')
 

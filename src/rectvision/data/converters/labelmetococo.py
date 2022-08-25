@@ -10,6 +10,16 @@ import glob
 import PIL.Image
 
 
+class NpEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, np.integer):
+            return int(obj)
+        if isinstance(obj, np.floating):
+            return float(obj)
+        if isinstance(obj, np.ndarray):
+            return obj.tolist()
+        return json.JSONEncoder.default(self, obj)
+
 class LabelmeToCoco():
     def __init__(self, ann_dir, out_coco_dir, project_desc=""):
         """
@@ -47,11 +57,12 @@ class LabelmeToCoco():
 
     def data_transfer(self):
         for num, json_file in enumerate(self.labelme_json):
+            print(json_file)
             with open(json_file, "r") as fp:
                 data = json.load(fp)
                 self.images.append(self.image(data, num))
                 for shapes in data["shapes"]:
-                    label = shapes["label"].split("_")
+                    label = shapes["label"]
                     if label not in self.label:
                         self.label.append(label)
                     points = shapes["points"]
@@ -84,9 +95,9 @@ class LabelmeToCoco():
 
     def category(self, label):
         category = {}
-        category["supercategory"] = label[0]
+        category["supercategory"] = label
         category["id"] = len(self.categories)
-        category["name"] = label[0]
+        category["name"] = label
         return category
 
     def annotation(self, points, label, num):
@@ -101,10 +112,12 @@ class LabelmeToCoco():
         annotation["iscrowd"] = 0
         annotation["area"] = area
         annotation["image_id"] = num
+        [[xmin, ymin], [xmax, ymax]] = points
+        o_width = xmax - xmin
+        o_height = ymax - ymin
+        annotation["bbox"] = [xmin, ymin, o_width, o_height]
 
-        annotation["bbox"] = list(map(float, self.getbbox(points)))
-
-        annotation["category_id"] = label[0]  # self.getcatid(label)
+        annotation["category_id"] = label  # self.getcatid(label)
         annotation["id"] = self.annID
         return annotation
 
@@ -171,6 +184,5 @@ class LabelmeToCoco():
         os.makedirs(
             os.path.dirname(os.path.abspath(self.save_json_path)), exist_ok=True
         )
-        json.dump(self.data_coco, open(self.save_json_path, "w"), indent=4)
+        json.dump(self.data_coco, open(self.save_json_path, "w"), indent=4, cls=NpEncoder)
         self.copy_images()
-
