@@ -45,6 +45,9 @@ class FasterRCNN():
         cfg.DATASETS.TEST = ("valid_data")
         cfg.MODEL.WEIGHTS = model_zoo.get_checkpoint_url("COCO-Detection/faster_rcnn_X_101_32x8d_FPN_3x.yaml")  # Let training initialize from model zoo
         cfg.SOLVER.IMS_PER_BATCH = 2
+        cfg.SOLVER.WARMUP_ITERS = 1000
+        cfg.SOLVER.STEPS = (1000, 1500)
+        cfg.SOLVER.GAMMA = 0.05
         cfg.SOLVER.BASE_LR = 0.00025  
         cfg.SOLVER.MAX_ITER = self.num_epochs    
         cfg.SOLVER.STEPS = []        # do not decay learning rate
