@@ -60,7 +60,13 @@ class FasterRCNN():
         self.register_data()
         self.model_cfg = self.edit_config()
         trainer = DefaultTrainer(self.model_cfg) 
-        trainer.resume_or_load(resume=False)
+        trainer.resume_or_load(resume=True)
+        trainer.train() 
+
+    def train_registered(self):
+        self.model_cfg = self.edit_config()
+        trainer = DefaultTrainer(self.model_cfg) 
+        trainer.resume_or_load(resume=True)
         trainer.train() 
 
     def evaluate(self):
