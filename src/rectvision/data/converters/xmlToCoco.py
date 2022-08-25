@@ -9,12 +9,22 @@ import glob
 from PIL import Image, ImageDraw
 
 
+class NpEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, np.integer):
+            return int(obj)
+        if isinstance(obj, np.floating):
+            return float(obj)
+        if isinstance(obj, np.ndarray):
+            return obj.tolist()
+        return json.JSONEncoder.default(self, obj)
+
 class XmlToCoco(object):
     def __init__(self, ann_dir, out_coco_dir, project_desc=""):
         self.ann_dir = ann_dir
         self.xml_ann = glob.glob(os.path.join(self.ann_dir, "*.xml"))
         self.out_coco_dir = out_coco_dir
-        self.save_json_path = os.path.join(self.valid_path(self.out_coco_dir), 'coco.json')
+        self.save_json_path = os.path.join(self.valid_path(self.out_coco_dir), 'annotations.json')
         self.project_desc = project_desc
         self.info = {}
         self.images = []
@@ -90,9 +100,9 @@ class XmlToCoco(object):
 
     def category(self, label):
         category = {}
-        category["supercategory"] = label[0]
+        category["supercategory"] = label
         category["id"] = len(self.categories)
-        category["name"] = label[0]
+        category["name"] = label
         return category
 
     def getcatid(self, label):
@@ -120,7 +130,7 @@ class XmlToCoco(object):
         o_height = ymax - ymin
         annotation["bbox"] = [xmin, ymin, o_width, o_height]
 
-        annotation["category_id"] = label[0]  # self.getcatid(label)
+        annotation["category_id"] = label  # self.getcatid(label)
         annotation["id"] = self.annID
         return annotation
 
@@ -147,6 +157,9 @@ class XmlToCoco(object):
         os.makedirs(
             os.path.dirname(os.path.abspath(self.save_json_path)), exist_ok=True
         )
-        json.dump(self.data_coco, open(self.save_json_path, "w"), indent=4)
+        json.dump(self.data_coco, open(self.save_json_path, "w"), indent=4, cls=NpEncoder)
         self.copy_images()
 
+ann_dir = r'C:\Users\sanni\Downloads\test_xml\annotations'
+out_coco_dir = r'C:\Users\sanni\Downloads\test_xml'
+XmlToCoco(ann_dir, out_coco_dir, project_desc="")

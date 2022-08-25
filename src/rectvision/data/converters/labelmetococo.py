@@ -19,7 +19,7 @@ class LabelmeToCoco():
         self.ann_dir = ann_dir
         self.labelme_json = glob.glob(os.path.join(self.ann_dir, "*.json"))
         self.out_coco_dir = out_coco_dir
-        self.save_json_path = os.path.join(self.valid_path(self.out_coco_dir), 'coco.json')
+        self.save_json_path = os.path.join(self.valid_path(self.out_coco_dir), 'annotations.json')
         self.project_desc = project_desc
         self.info = {}
         self.images = []
