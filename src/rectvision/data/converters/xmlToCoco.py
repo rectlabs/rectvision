@@ -150,6 +150,7 @@ class XmlToCoco(object):
 
     def save_json(self):
         print("save coco json")
+        self.gen_info()
         self.data_transfer()
         self.data_coco = self.data2coco()
 
