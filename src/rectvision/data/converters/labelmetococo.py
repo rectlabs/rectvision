@@ -53,7 +53,7 @@ class LabelmeToCoco():
         date = datetime.now()
         self.info["version"] = "1.0"
         self.info["year"] = date.year
-        self.info["date_created"] = date
+        self.info["date_created"] = str(date)
 
     def data_transfer(self):
         for num, json_file in enumerate(self.labelme_json):

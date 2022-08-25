@@ -48,7 +48,7 @@ class XmlToCoco(object):
         date = datetime.now()
         self.info["version"] = "1.0"
         self.info["year"] = date.year
-        self.info["date_created"] = date
+        self.info["date_created"] = str(date)
 
     def image(self, data, num):
         '''This method gets the width, height, id and filename for an image and 
