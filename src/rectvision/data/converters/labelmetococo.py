@@ -110,11 +110,11 @@ class LabelmeToCoco():
         # area = 0.5 * np.abs(np.dot(x, np.roll(y, 1)) - np.dot(y, np.roll(x, 1)))
         # annotation["segmentation"] = [[list(np.asarray(points).flatten())]]
         annotation["iscrowd"] = 0
-        # annotation["area"] = area
         annotation["image_id"] = num
         [[xmin, ymin], [xmax, ymax]] = points
         o_width = xmax - xmin
         o_height = ymax - ymin
+        annotation["area"] = o_width * o_height
         annotation["bbox"] = [xmin, ymin, o_width, o_height]
 
         annotation["category_id"] = label  # self.getcatid(label)
