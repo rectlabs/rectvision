@@ -120,10 +120,10 @@ class XmlToCoco(object):
         x = contour[:, 0]
         y = contour[:, 1]
         #area of bounding polgon
-        area = 0.5 * np.abs(np.dot(x, np.roll(y, 1)) - np.dot(y, np.roll(x, 1)))
+        # area = 0.5 * np.abs(np.dot(x, np.roll(y, 1)) - np.dot(y, np.roll(x, 1)))
         # annotation["segmentation"] = [list(np.asarray(points).flatten())]
         annotation["iscrowd"] = 0
-        annotation["area"] = area
+        # annotation["area"] = area
         annotation["image_id"] = num
         [[xmin, ymin], [xmax, ymax]] = points
         o_width = xmax - xmin

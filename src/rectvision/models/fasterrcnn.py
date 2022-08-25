@@ -37,6 +37,7 @@ class FasterRCNN():
                                   'test_data':[self.test_annotations, self.test_images], 
                                   'valid_data':[self.valid_annotations, self.valid_images]}.items():
             register_coco_instances(data_category, {}, dataset[0], dataset[1])
+            print('{} registered!'.format(data_category))
     
     def edit_config(self):
         cfg = get_cfg()
