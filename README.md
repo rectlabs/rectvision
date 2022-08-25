@@ -13,7 +13,6 @@ Edge Deployment on:
 * Mobile Applications - Mobile App modules
 * Drones - Drone modules
 
-`[backend api](http://164.92.64.23/api/docs/#/)`
 
 ## Installation
 Rectvision supports an installation of Python 3.6 and above. It is available on Windows, MacOS and Linux Systems.
@@ -27,7 +26,9 @@ $ pip install --upgrade rectvision
 
 Alternatively, you may download the wheels from [PyPi](https://pypi.org/project/rectvision/#files)
 
-## Getting Started
-### Settings
-### Data
-### Processors
+
+## Guide
+
+```
+visit: https://docs.rectvision.com/docs/intro
+```
