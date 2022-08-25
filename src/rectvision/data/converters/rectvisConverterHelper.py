@@ -269,7 +269,7 @@ class GenerateAnnotation():
                 img_path, label, shape_type, points = ppt
                 #update imagePath
                 output_json_dict['imagePath']=img_path
-                data = labelme.LabelFile.load_image_file(os.path.join(self.train_path, 'images'))
+                data = labelme.LabelFile.load_image_file(os.path.join(self.train_path, 'images', img_path))
                 output_json_dict['imageData']=base64.b64encode(data).decode('utf-8')
                 #shapes info
                 shapes_info = {
@@ -301,7 +301,7 @@ class GenerateAnnotation():
                 img_path, label, shape_type, points = ppt
                 #update imagePath
                 output_json_dict['imagePath']=img_path
-                data = labelme.LabelFile.load_image_file(os.path.join(self.test_path, 'images'))
+                data = labelme.LabelFile.load_image_file(os.path.join(self.test_path, 'images', img_path))
                 output_json_dict['imageData']=base64.b64encode(data).decode('utf-8')
                 #shapes info
                 shapes_info = {
@@ -333,7 +333,7 @@ class GenerateAnnotation():
                 img_path, label, shape_type, points = ppt
                 #update imagePath
                 output_json_dict['imagePath']=img_path
-                data = labelme.LabelFile.load_image_file(os.path.join(self.validation_path, 'images'))
+                data = labelme.LabelFile.load_image_file(os.path.join(self.validation_path, 'images', img_path))
                 output_json_dict['imageData']=base64.b64encode(data).decode('utf-8')
                 #shapes info
                 shapes_info = {
