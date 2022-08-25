@@ -113,7 +113,8 @@ class Yolov5():
                         "--weights", self.model_weights,
                         "--data", self.data_yaml,
                         "--task", "test",
-                        "--name", self.project_name + '_performance'], capture_output=True, text=True)
+                        "--name", self.project_name + '_performance',
+                        "--save-json"], capture_output=True, text=True)
         # !python {self.test_model} --weights {self.model_weights} --data {self.data_yaml} --task test --name {self.project_name + '_performance'}
         if process.returncode == 0:
           print('Evaluated successfully!') 
