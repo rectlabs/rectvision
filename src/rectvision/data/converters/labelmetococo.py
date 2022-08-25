@@ -52,7 +52,7 @@ class LabelmeToCoco():
         self.info["description"] = self.project_desc
         date = datetime.now()
         self.info["version"] = "1.0"
-        self.info["year"] = date.year
+        # self.info["year"] = date.year
         self.info["date_created"] = str(date)
 
     def data_transfer(self):
