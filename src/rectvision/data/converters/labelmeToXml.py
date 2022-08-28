@@ -123,7 +123,7 @@ class LabelmeToXml():
                 ymax.text = str(int(ppt[4]))
             
                 ET.indent(obj, space='\t', level=1)
-            ET.indent(root, space='\t', level=0)
+            ET.indent(root, space='\t', level=0) 
             #save annotation to out_xml_path
             tree.write(out_xml_path)
                 
