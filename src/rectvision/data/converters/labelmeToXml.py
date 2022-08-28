@@ -69,6 +69,7 @@ class LabelmeToXml():
         print('Starting conversion...')
         tree = ET.parse('template.xml')
         root = tree.getroot()
+        # ET.indent(root, level=0)
         #checkk validity of output text dir and create one if it doesn't exist
         self.out_xml_dir = self.valid_path(self.out_xml_dir)
         #iterate over all json files in self.ann_dir and extract required info from each
@@ -103,7 +104,7 @@ class LabelmeToXml():
             for ppt in self.ppts:
                 #append new object
                 obj = ET.SubElement(root, 'object')
-
+                
                 name = ET.SubElement(obj, 'name')
                 name.text = str(ppt[0])
 
@@ -121,10 +122,13 @@ class LabelmeToXml():
                 ymax = ET.SubElement(bndbox, 'ymax')
                 ymax.text = str(int(ppt[4]))
             
+                ET.indent(obj, space='\t', level=1)
+            ET.indent(root, space='\t', level=0)
             #save annotation to out_xml_path
             tree.write(out_xml_path)
                 
         print('All done!')
+
         
 
 
