@@ -65,11 +65,8 @@ class LabelmeToXml():
         return path
 
     def json_to_xml(self):
-        self.get_xml_template()
         print('Starting conversion...')
-        tree = ET.parse('template.xml')
-        root = tree.getroot()
-        #checkk validity of output text dir and create one if it doesn't exist
+        #check validity of output text dir and create one if it doesn't exist
         self.out_xml_dir = self.valid_path(self.out_xml_dir)
         #iterate over all json files in self.ann_dir and extract required info from each
         for ann_path in glob.glob(os.path.join(self.ann_dir, '*.json')):
@@ -80,30 +77,40 @@ class LabelmeToXml():
 
             #get output xml file
             out_xml_path = os.path.splitext(os.path.join(self.out_xml_dir, self.current_img_path))[0] + '.xml'
-            #modify xml template
-            folder = root.find('folder')
+            #create xml enteries
+            root = ET.Element('annotation')
+            #append folder
+            folder = ET.SubElement(root, 'folder')
             folder.text = self.ann_dir
+            ET.indent(folder, space='\t', level=1)
 
-            fname = root.find('filename')
+            fname = ET.SubElement(root, 'filename')
             fname.text = self.current_img_path
+            ET.indent(fname, space='\t', level=1)
 
-            src = root.find('source')
-            database = src.find('database')
+            src = ET.SubElement(root, 'source')
+            database = ET.SubElement(src, 'database')
             database.text = self.database
+            ET.indent(src, space='\t', level=1)
 
-            size = root.find('size')
-            width = size.find('width')
+            size = ET.SubElement(root, 'size')
+            width = ET.SubElement(size, 'width')
             width.text = str(self.current_img_width)
-            height = size.find('height')
+            height = ET.SubElement(size, 'height')
             height.text = str(self.current_img_height)
-            depth = size.find('depth')
+            depth = ET.SubElement(size, 'depth')
             depth.text = str(self.current_img_depth)
+            ET.indent(size, space='\t', level=1)
+
+            segmented = ET.SubElement(root, 'segmented')
+            segmented.text = str(0)
+            ET.indent(segmented, space='\t', level=1)
             
             #write objects as specific annotations
             for ppt in self.ppts:
                 #append new object
                 obj = ET.SubElement(root, 'object')
-
+                
                 name = ET.SubElement(obj, 'name')
                 name.text = str(ppt[0])
 
@@ -121,10 +128,17 @@ class LabelmeToXml():
                 ymax = ET.SubElement(bndbox, 'ymax')
                 ymax.text = str(int(ppt[4]))
             
+                ET.indent(obj, space='\t', level=1)
+            ET.indent(root, space='\t', level=0)
+            #convert xml to byte object
+            b_xml = ET.tostring(root)
             #save annotation to out_xml_path
-            tree.write(out_xml_path)
+            with open(out_xml_path, 'wb') as f:
+                f.write(b_xml)
                 
         print('All done!')
+
+
         
 
 

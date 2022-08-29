@@ -128,6 +128,7 @@ class XmlToCoco(object):
         [[xmin, ymin], [xmax, ymax]] = points
         o_width = xmax - xmin
         o_height = ymax - ymin
+        annotation["area"] = o_width * o_height
         annotation["bbox"] = [xmin, ymin, o_width, o_height]
 
         annotation["category_id"] = label  # self.getcatid(label)

@@ -483,15 +483,12 @@ class GenerateAnnotation():
         open('template.xml', 'wb').write(response.content)
 
     def rectjson_to_xml(self):
-        #get template
-        self.get_xml_template()
         print('Starting conversion...')
         #get all image info
         self.extract_info_from_json()
         #split to train, test, validation
         self.ppts_train, self.ppts_test, self.ppts_valid = self.split(self.ppts, self.train_ratio, self.test_ratio, self.valid_ratio)
-        tree = ET.parse('template.xml')
-        root = tree.getroot()
+        
         for image_ppt in self.ppts_train:
             #download image
             image_name = image_ppt[0][0]
@@ -501,24 +498,34 @@ class GenerateAnnotation():
             #write to xml file
             train_out_annotation_dir = self.valid_path(os.path.join(self.train_path, 'annotations'))
             out_annotation_path = os.path.join(train_out_annotation_dir, self.replace_extension(img_path, '.xml'))
-            #modify xml template
-            folder = root.find('folder')
-            folder.text = train_out_annotation_dir
+            #create xml enteries
+            root = ET.Element('annotation')
+            #append folder
+            folder = ET.SubElement(root, 'folder')
+            folder.text = self.valid_path(os.path.join(self.train_path, 'images'))
+            ET.indent(folder, space='\t', level=1)
 
-            fname = root.find('filename')
+            fname = ET.SubElement(root, 'filename')
             fname.text = img_path
+            ET.indent(fname, space='\t', level=1)
 
-            src = root.find('source')
-            database = src.find('database')
+            src = ET.SubElement(root, 'source')
+            database = ET.SubElement(src, 'database')
             database.text = self.database
+            ET.indent(src, space='\t', level=1)
 
-            size = root.find('size')
-            width = size.find('width')
+            size = ET.SubElement(root, 'size')
+            width = ET.SubElement(size, 'width')
             width.text = str(img_width)
-            height = size.find('height')
+            height = ET.SubElement(size, 'height')
             height.text = str(img_height)
-            depth = size.find('depth')
+            depth = ET.SubElement(size, 'depth')
             depth.text = str(img_depth)
+            ET.indent(size, space='\t', level=1)
+
+            segmented = ET.SubElement(root, 'segmented')
+            segmented.text = str(0)
+            ET.indent(segmented, space='\t', level=1)
 
             for ppt in image_ppt:
                 #append new object
@@ -540,9 +547,14 @@ class GenerateAnnotation():
                 ymin.text = str(int(ppt[8]))
                 ymax = ET.SubElement(bndbox, 'ymax')
                 ymax.text = str(int(ppt[9]))
-
-            #save annotation to xml file
-            tree.write(out_annotation_path)
+                
+                ET.indent(obj, space='\t', level=1)
+            ET.indent(root, space='\t', level=0)
+            #convert xml to byte object
+            b_xml = ET.tostring(root)
+            #save annotation to out_xml_path
+            with open(out_annotation_path, 'wb') as f:
+                f.write(b_xml)
         
         for image_ppt in self.ppts_test:   
             #download image
@@ -553,24 +565,34 @@ class GenerateAnnotation():
             #write to xml file
             test_out_annotation_dir = self.valid_path(os.path.join(self.test_path, 'annotations'))
             out_annotation_path = os.path.join(test_out_annotation_dir, self.replace_extension(img_path, '.xml'))
-            #modify xml template
-            folder = root.find('folder')
-            folder.text = test_out_annotation_dir
+            #create xml enteries
+            root = ET.Element('annotation')
+            #append folder
+            folder = ET.SubElement(root, 'folder')
+            folder.text = self.valid_path(os.path.join(self.test_path, 'images'))
+            ET.indent(folder, space='\t', level=1)
 
-            fname = root.find('filename')
+            fname = ET.SubElement(root, 'filename')
             fname.text = img_path
+            ET.indent(fname, space='\t', level=1)
 
-            src = root.find('source')
-            database = src.find('database')
+            src = ET.SubElement(root, 'source')
+            database = ET.SubElement(src, 'database')
             database.text = self.database
+            ET.indent(src, space='\t', level=1)
 
-            size = root.find('size')
-            width = size.find('width')
+            size = ET.SubElement(root, 'size')
+            width = ET.SubElement(size, 'width')
             width.text = str(img_width)
-            height = size.find('height')
+            height = ET.SubElement(size, 'height')
             height.text = str(img_height)
-            depth = size.find('depth')
+            depth = ET.SubElement(size, 'depth')
             depth.text = str(img_depth)
+            ET.indent(size, space='\t', level=1)
+
+            segmented = ET.SubElement(root, 'segmented')
+            segmented.text = str(0)
+            ET.indent(segmented, space='\t', level=1)
 
             for ppt in image_ppt:
                 #append new object
@@ -592,9 +614,14 @@ class GenerateAnnotation():
                 ymin.text = str(int(ppt[8]))
                 ymax = ET.SubElement(bndbox, 'ymax')
                 ymax.text = str(int(ppt[9]))
-
-            #save annotation to xml file
-            tree.write(out_annotation_path)
+                
+                ET.indent(obj, space='\t', level=1)
+            ET.indent(root, space='\t', level=0)
+            #convert xml to byte object
+            b_xml = ET.tostring(root)
+            #save annotation to out_xml_path
+            with open(out_annotation_path, 'wb') as f:
+                f.write(b_xml)
         
         for image_ppt in self.ppts_valid:   
             #download image
@@ -605,24 +632,34 @@ class GenerateAnnotation():
             #write to xml file
             validation_out_annotation_dir = self.valid_path(os.path.join(self.validation_path, 'annotations'))
             out_annotation_path = os.path.join(validation_out_annotation_dir, self.replace_extension(img_path, '.xml'))
-            #modify xml template
-            folder = root.find('folder')
-            folder.text = validation_out_annotation_dir
+            #create xml enteries
+            root = ET.Element('annotation')
+            #append folder
+            folder = ET.SubElement(root, 'folder')
+            folder.text = self.valid_path(os.path.join(self.validation_path, 'images'))
+            ET.indent(folder, space='\t', level=1)
 
-            fname = root.find('filename')
+            fname = ET.SubElement(root, 'filename')
             fname.text = img_path
+            ET.indent(fname, space='\t', level=1)
 
-            src = root.find('source')
-            database = src.find('database')
+            src = ET.SubElement(root, 'source')
+            database = ET.SubElement(src, 'database')
             database.text = self.database
+            ET.indent(src, space='\t', level=1)
 
-            size = root.find('size')
-            width = size.find('width')
+            size = ET.SubElement(root, 'size')
+            width = ET.SubElement(size, 'width')
             width.text = str(img_width)
-            height = size.find('height')
+            height = ET.SubElement(size, 'height')
             height.text = str(img_height)
-            depth = size.find('depth')
+            depth = ET.SubElement(size, 'depth')
             depth.text = str(img_depth)
+            ET.indent(size, space='\t', level=1)
+
+            segmented = ET.SubElement(root, 'segmented')
+            segmented.text = str(0)
+            ET.indent(segmented, space='\t', level=1)
 
             for ppt in image_ppt:
                 #append new object
@@ -644,9 +681,14 @@ class GenerateAnnotation():
                 ymin.text = str(int(ppt[8]))
                 ymax = ET.SubElement(bndbox, 'ymax')
                 ymax.text = str(int(ppt[9]))
-
-            #save annotation to xml file
-            tree.write(out_annotation_path)
+                
+                ET.indent(obj, space='\t', level=1)
+            ET.indent(root, space='\t', level=0)
+            #convert xml to byte object
+            b_xml = ET.tostring(root)
+            #save annotation to out_xml_path
+            with open(out_annotation_path, 'wb') as f:
+                f.write(b_xml)
         print('All done!')
 
     def rectjson_to_kerasRetinanetCsv(self):
