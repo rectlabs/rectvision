@@ -26,6 +26,7 @@ class NpEncoder(json.JSONEncoder):
 class GenerateAnnotation():   
     def __init__(self, export_format, annotations, labels=[], shape_type='rectangle', 
                 database = 'User Provided', train_ratio=0.7, test_ratio=0.2, valid_ratio=0.1):
+         self.endpoint = "https://test.backend.app.rectvision.com/api/v1/"
         self.annotations = annotations
         self.export_format = export_format
         self.shape_type = shape_type
@@ -111,7 +112,7 @@ class GenerateAnnotation():
         #zip projects directory
         zip_path = self.compress_annotations(zip_path=os.path.join('results', 'annotations.zip'))
         #post annotation to endpoint   
-        base_url = 'https://backend.app.rectvision.com/api/v1/projects/'
+        base_url = self.endpoint + 'projects/'
         request_url = base_url + self.project_id + '/zip-file'
         headers={'Authorization':self.user_token}
         fo = open(zip_path, 'rb')
