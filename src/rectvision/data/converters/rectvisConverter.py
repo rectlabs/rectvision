@@ -9,7 +9,8 @@ from .rectvisConverterHelper import GenerateAnnotation
 class RectvisionConverter():
     def __init__(self, train_split, test_split, validation_split, export_format):        
         self.token = getpass.getpass('Enter Token: ')
-        base_url = 'https://backend.app.rectvision.com/api/v1/projects/decode-token?token='
+        self.endpoint = "https://test.backend.app.rectvision.com/api/v1/"
+        base_url = self.endpoint + 'projects/decode-token?token='
         request_url = base_url + self.token
         self.login_response = requests.get(request_url)
         while not self.login_response.ok:
@@ -32,7 +33,7 @@ class RectvisionConverter():
 
     def get_db_info(self):
         #get project details from get-a-project endpoint
-        base_url = 'https://backend.app.rectvision.com/api/v1/projects/'
+        base_url = self.endpoint + 'projects/'
         request_url = base_url + self.project_id
         headers={'Authorization':self.user_token}
         response = requests.get(request_url, headers=headers)
@@ -43,11 +44,12 @@ class RectvisionConverter():
         if current_project['annotation_choice'] == 'Object_detection':
             shape_type = 'rectangle'
 
-        return labels, shape_type       
+        return labels, shape_type 
+      
 
     def get_annotations(self):
         #get annotations from endpoint
-        base_url = 'https://backend.app.rectvision.com/api/v1/projects/'
+        base_url = self.endpoint + 'projects/'
         request_url = base_url + self.project_id + '/annotations?limit=1000000000'
         headers={'Authorization':self.user_token}
         response = requests.get(request_url, headers=headers)
