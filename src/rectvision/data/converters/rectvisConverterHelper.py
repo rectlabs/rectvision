@@ -26,7 +26,7 @@ class NpEncoder(json.JSONEncoder):
 class GenerateAnnotation():   
     def __init__(self, export_format, annotations, labels=[], shape_type='rectangle', 
                 database = 'User Provided', train_ratio=0.7, test_ratio=0.2, valid_ratio=0.1):
-         self.endpoint = "https://test.backend.app.rectvision.com/api/v1/"
+        self.endpoint = "https://test.backend.app.rectvision.com/api/v1/"
         self.annotations = annotations
         self.export_format = export_format
         self.shape_type = shape_type
