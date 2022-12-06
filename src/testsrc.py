@@ -1,4 +1,4 @@
-from src.rectvision import data, models, processors, settings
+from rectvision import data, models, processors, settings
 from rectvision.data import converters
 
 converters.LabelmeToTfCsv(ann_dir='/valid', out_csv_dir='/cocofiles')
