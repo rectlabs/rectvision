@@ -82,32 +82,7 @@ class RectvisionConverter():
         return rearranged_annotations
       
 
-    # def get_annotations(self):
-    #     #get annotations from endpoint
-    #     base_url = self.endpoint + 'projects/'
-    #     request_url = base_url + self.project_id + '/annotations?limit=1000000000'
-    #     headers={'Authorization':self.user_token}
-    #     response = requests.get(request_url, headers=headers)
-    #     annotations = loads(response.text)['data']['annotations']
 
-    #     rearranged_annotations = {}
-    #     for annotation in annotations:
-    #         image_name = annotation['file']['name']
-    #         if image_name not in rearranged_annotations:
-    #             rearranged_annotations[image_name] = {}
-    #         if 'points' not in rearranged_annotations[image_name]:
-    #             rearranged_annotations[image_name]['points'] = []
-    #         if 'labels' not in rearranged_annotations[image_name]:
-    #             rearranged_annotations[image_name]['labels'] = []
-    #         rearranged_annotations[image_name]['image_id'] = annotation['file_id']
-    #         rearranged_annotations[image_name]['image_url'] = annotation['file']['url']
-    #         rearranged_annotations[image_name]['image_height'] = annotation['file']['metadata']['height']
-    #         rearranged_annotations[image_name]['image_width'] = annotation['file']['metadata']['width']
-    #         rearranged_annotations[image_name]['image_channels'] = annotation['file']['metadata']['channels']
-    #         rearranged_annotations[image_name]['points'].append(annotation['points'])
-    #         rearranged_annotations[image_name]['labels'].append(annotation['label']['value'])
-
-    #     return rearranged_annotations
 
     def rectvision_converter(self):
         labels, shape_type = self.get_db_info()
