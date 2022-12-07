@@ -20,9 +20,9 @@ setup(
     description=DESCRIPTION,
     long_description_content_type="text/markdown",
     long_description=long_description,
-    packages=find_packages(),
-    install_requires=["requests", "importlib-metadata", "boto3==1.22.9", "dtw==1.4.0", "labelme==5.0.1","moviepy==1.0.3", "numpy==1.20.0",
-    "pyJWT==2.4.0", "python-dotenv==0.19.2", "PyYAML==5.4.1", "opencv-contrib-python==4.6.0.66", "sklearn"],
+    packages=find_packages()
+    # install_requires=["requests", "importlib-metadata", "boto3==1.22.9", "dtw==1.4.0", "labelme==5.0.1","moviepy==1.0.3", "numpy==1.20.0",
+    # "pyJWT==2.4.0", "python-dotenv==0.19.2", "PyYAML==5.4.1", "opencv-contrib-python==4.6.0.66", "sklearn"],
     keywords=['python', 'NLP', 'computer vision', 'deep learning', 'AI'],
     classifiers=[
         "Development Status :: 1 - Planning",
