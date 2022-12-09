@@ -408,7 +408,7 @@ class GenerateAnnotation():
             image_url = self.annotations[image_name]['image_url']
             self.download_image(image_url, os.path.join(self.train_path, 'images'))       
             #write to txt file
-            train_out_annotation_dir = self.valid_path(os.path.join(self.train_path, 'annotations'))
+            train_out_annotation_dir = self.valid_path(os.path.join(self.train_path, 'labels'))
             out_annotation_path = os.path.join(train_out_annotation_dir, self.replace_extension(image_ppt[0][0], '.txt'))
             with open(out_annotation_path, 'w') as f:
                 for ppts in image_ppt:
@@ -419,7 +419,7 @@ class GenerateAnnotation():
             image_url = self.annotations[image_name]['image_url']
             self.download_image(image_url, os.path.join(self.test_path, 'images'))        
             #write to txt file
-            test_out_annotation_dir = self.valid_path(os.path.join(self.test_path, 'annotations'))
+            test_out_annotation_dir = self.valid_path(os.path.join(self.test_path, 'labels'))
             out_annotation_path = os.path.join(test_out_annotation_dir, self.replace_extension(image_ppt[0][0], '.txt'))
             with open(out_annotation_path, 'w') as f:
                 for ppts in image_ppt:
@@ -430,7 +430,7 @@ class GenerateAnnotation():
             image_url = self.annotations[image_name]['image_url']
             self.download_image(image_url, os.path.join(self.validation_path, 'images'))    
             #write to txt file
-            validation_out_annotation_dir = self.valid_path(os.path.join(self.validation_path, 'annotations'))
+            validation_out_annotation_dir = self.valid_path(os.path.join(self.validation_path, 'labels'))
             out_annotation_path = os.path.join(validation_out_annotation_dir, self.replace_extension(image_ppt[0][0], '.txt'))
             with open(out_annotation_path, 'w') as f:
                 for ppts in image_ppt:
