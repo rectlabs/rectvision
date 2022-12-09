@@ -37,12 +37,12 @@ class GenerateAnnotation():
         self.ppts = []
         self.labels = labels
         #create results directory
-        self.valid_path('results')
+        self.valid_path('dataset')
         #generate labelmap
-        self.label_to_id_file_path = os.path.join('results', 'labelmap.txt')
-        self.train_path = self.valid_path(os.path.join('results', 'train'))
-        self.test_path = self.valid_path(os.path.join('results', 'test'))
-        self.validation_path = self.valid_path(os.path.join('results', 'validation'))
+        self.label_to_id_file_path = os.path.join('dataset', 'labelmap.txt')
+        self.train_path = self.valid_path(os.path.join('dataset', 'train'))
+        self.test_path = self.valid_path(os.path.join('dataset', 'test'))
+        self.validation_path = self.valid_path(os.path.join('dataset', 'validation'))
         self.generate_labelmap(self.labels, self.label_to_id_file_path)
         self.label_to_id = self.read_dictionary(self.label_to_id_file_path)
 
