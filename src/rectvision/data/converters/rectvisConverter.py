@@ -60,24 +60,26 @@ class RectvisionConverter():
         annotation_prop = annotation_properties['data']['annotations']
 
         rearranged_annotations = {}
-        for annon_prop, f_prop in zip(annotation_prop, file_prop):
-            image_name = f_prop['name']
-            if image_name not in rearranged_annotations and len(f_prop['meta'].keys()) == 13:
-                rearranged_annotations[image_name] = {}
-            else:
-                continue
-            if 'points' not in rearranged_annotations[image_name]:
-                rearranged_annotations[image_name]['points'] = []
-            if 'labels' not in rearranged_annotations[image_name]:
-                rearranged_annotations[image_name]['labels'] = []
-            rearranged_annotations[image_name]['image_id'] = f_prop['project_id']
-            rearranged_annotations[image_name]['image_url'] = f_prop['url']
-            # some files have missing heights and widths, pls investigate why #TODO
-            rearranged_annotations[image_name]['image_height'] = f_prop['meta']['height']
-            rearranged_annotations[image_name]['image_width'] = f_prop['meta']['width']
-            rearranged_annotations[image_name]['image_channels'] = f_prop['meta']['channels']
-            rearranged_annotations[image_name]['points'].append(annon_prop['points'])
-            rearranged_annotations[image_name]['labels'].append(annon_prop['label']['value'])
+        for annon_prop in annotation_prop:
+            for f_prop in file_prop:
+                if annon_prop['file']['name'] == f_prop['name']:
+                    image_name = f_prop['name']
+                    if image_name not in rearranged_annotations and len(f_prop['meta'].keys()) == 13:
+                        rearranged_annotations[image_name] = {}
+                    else:
+                        continue
+                    if 'points' not in rearranged_annotations[image_name]:
+                        rearranged_annotations[image_name]['points'] = []
+                    if 'labels' not in rearranged_annotations[image_name]:
+                        rearranged_annotations[image_name]['labels'] = []
+                    rearranged_annotations[image_name]['image_id'] = f_prop['project_id']
+                    rearranged_annotations[image_name]['image_url'] = f_prop['url']
+                    # some files have missing heights and widths, pls investigate why #TODO
+                    rearranged_annotations[image_name]['image_height'] = f_prop['meta']['height']
+                    rearranged_annotations[image_name]['image_width'] = f_prop['meta']['width']
+                    rearranged_annotations[image_name]['image_channels'] = f_prop['meta']['channels']
+                    rearranged_annotations[image_name]['points'].append(annon_prop['points'])
+                    rearranged_annotations[image_name]['labels'].append(annon_prop['label']['value'])
 
         return rearranged_annotations
       
