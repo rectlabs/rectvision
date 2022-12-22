@@ -1,10 +1,38 @@
 #this script gets project's annotation and call conversion script to convert to specified format.
 from json import loads
-import os
+import os, uuid, shutil
 import getpass
-import jwt
+import jwt, cv2
 import requests
 from .rectvisConverterHelper import GenerateAnnotation
+
+def download_url_to_disk(image_url):
+    try:
+        os.makedir('tmp')
+    except Exception as err:
+        pass
+    file_disk_path = './tmp/' + str(uuid.uuid4()) + ".jpg"
+    r = requests.get(image_url, stream = True)
+
+    # Check if the csv was retrieved successfully
+    if r.status_code == 200:
+        # Set decode_content value to True, otherwise the downloaded image file's size will be zero.
+        r.raw.decode_content = True
+
+        with open(os.path.join(file_disk_path),'wb') as f:
+            shutil.copyfileobj(r.raw, f)
+    
+    else:
+        pass 
+    
+    return file_disk_path
+
+def get_image_widith_height(image_url):
+    file_path = download_url_to_disk(image_url)
+    img = cv2.imread(file_path)
+    height, width, channel = img.shape
+    os.remove(file_path)
+    return height, width, channel
 
 class RectvisionConverter():
     def __init__(self, train_split, test_split, validation_split, export_format):        
@@ -61,25 +89,23 @@ class RectvisionConverter():
 
         rearranged_annotations = {}
         for annon_prop in annotation_prop:
-            for f_prop in file_prop:
-                if annon_prop['file']['name'] == f_prop['name']:
-                    image_name = f_prop['name']
-                    if image_name not in rearranged_annotations and len(f_prop['meta'].keys()) == 13:
-                        rearranged_annotations[image_name] = {}
-                    else:
-                        continue
-                    if 'points' not in rearranged_annotations[image_name]:
-                        rearranged_annotations[image_name]['points'] = []
-                    if 'labels' not in rearranged_annotations[image_name]:
-                        rearranged_annotations[image_name]['labels'] = []
-                    rearranged_annotations[image_name]['image_id'] = f_prop['project_id']
-                    rearranged_annotations[image_name]['image_url'] = f_prop['url']
-                    # some files have missing heights and widths, pls investigate why #TODO
-                    rearranged_annotations[image_name]['image_height'] = f_prop['meta']['height']
-                    rearranged_annotations[image_name]['image_width'] = f_prop['meta']['width']
-                    rearranged_annotations[image_name]['image_channels'] = f_prop['meta']['channels']
-                    rearranged_annotations[image_name]['points'].append(annon_prop['points'])
-                    rearranged_annotations[image_name]['labels'].append(annon_prop['label']['value'])
+            image_name = annon_prop['file']['name']
+            if image_name not in rearranged_annotations:
+                rearranged_annotations[image_name] = {}
+            else:
+                continue
+            if 'points' not in rearranged_annotations[image_name]:
+                rearranged_annotations[image_name]['points'] = []
+            if 'labels' not in rearranged_annotations[image_name]:
+                rearranged_annotations[image_name]['labels'] = []
+            rearranged_annotations[image_name]['image_id'] = annon_prop['file_id']
+            rearranged_annotations[image_name]['image_url'] = annon_prop['file']['url']
+            imwidth, imheight, channel = get_image_widith_height(annon_prop['file']['url'])
+            rearranged_annotations[image_name]['image_height'] =imwidth
+            rearranged_annotations[image_name]['image_width'] = imheight
+            rearranged_annotations[image_name]['image_channels'] = channel
+            rearranged_annotations[image_name]['points'].append(annon_prop['points'])
+            rearranged_annotations[image_name]['labels'].append(annon_prop['label']['value'])
 
         return rearranged_annotations
       
