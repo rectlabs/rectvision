@@ -191,7 +191,7 @@ class GenerateAnnotation():
                     x_min, y_min, x_max, y_max = min(point_x), min(point_y), max(point_x), max(point_y)
                     width, height = x_max - x_min, y_max - y_min
                     x_center, y_center,  = x_min + (width/2), y_min + (height/2)
-                    print(x_min, y_min, x_max, y_max, current_img_width, current_img_width)
+                    print(x_min, y_min, x_max, y_max, current_img_width, current_img_height)
                     image_ppts.append([current_img_path, label_id, x_center/current_img_width, 
                                        y_center/current_img_height, width/current_img_width, height/current_img_height, '\n' ])
                 self.ppts.append(image_ppts)
