@@ -151,6 +151,7 @@ class GenerateAnnotation():
             points = image_data['points']
             # print(points)
             labels = image_data['labels']
+            print("image url: ", image_data['image_url'])
             # print(labels)
             image_ppts = []
 
