@@ -35,8 +35,11 @@ def get_image_widith_height(image_url):
     return height, width, channel
 
 class RectvisionConverter():
-    def __init__(self, train_split, test_split, validation_split, export_format):        
-        self.token = getpass.getpass('Enter Token: ')
+    def __init__(self, train_split, test_split, validation_split, export_format, token = None): 
+        if token == None:       
+            self.token = getpass.getpass('Enter Token: ')
+        else:
+            self.token = token
         self.endpoint = "https://test.backend.app.rectvision.com/api/v1/"
         base_url = self.endpoint + 'projects/decode-token?token='
         request_url = base_url + self.token
