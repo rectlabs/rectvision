@@ -9,7 +9,7 @@ current_dir = os.getcwd()
 project_dir = current_dir 
  
 
-num_classes, img_size, batch_size, num_epochs, labels, project_name, project_dir = 2, 512, 2, 2, ["test", "cat", "dog"], "mask_detect", project_dir
+num_classes, img_size, batch_size, num_epochs, labels, project_name, project_dir = 2, 512, 2, 200, ["test", "cat", "dog"], "mask_detect", project_dir
 model_yolo = models.Yolov5(num_classes, img_size, batch_size, num_epochs, labels, project_name, project_dir)
 
 # training
