@@ -187,9 +187,9 @@ class GenerateAnnotation():
                     point_y = [coord[1] for coord in point]
                     x_min, y_min, x_max, y_max = min(point_x), min(point_y), max(point_x), max(point_y)
                     width, height = x_max - x_min, y_max - y_min
-                    x_center, y_center,  = x_min + (width/2), y_min + (height/2)
+                    x_center, y_center,  = (x_min + x_max)/2, (y_min + y_max)/2
                     image_ppts.append([current_img_path, label_id, x_center/current_img_width, 
-                                       y_center/current_img_height, width/current_img_width, height/current_img_height, current_img_width, current_img_height, '\n' ])
+                                       y_center/current_img_height, width/current_img_width, height/current_img_height, '\n' ])
                 self.ppts.append(image_ppts)
 
             elif self.export_format == 'yolov3-keras-txt':
@@ -421,7 +421,7 @@ class GenerateAnnotation():
             out_annotation_path = os.path.join(test_out_annotation_dir, self.replace_extension(image_ppt[0][0], '.txt'))
             with open(out_annotation_path, 'w') as f:
                 for ppts in image_ppt:
-                    f.write(' '.join(str(ppt) for ppt in ppts[1:-3]))
+                    f.write(' '.join(str(ppt) for ppt in ppts[1:]))
         for image_ppt in self.ppts_valid:        
             #download image
             image_name = image_ppt[0][0]
@@ -432,7 +432,7 @@ class GenerateAnnotation():
             out_annotation_path = os.path.join(validation_out_annotation_dir, self.replace_extension(image_ppt[0][0], '.txt'))
             with open(out_annotation_path, 'w') as f:
                 for ppts in image_ppt:
-                    print(image_url, ppts)
+                    # print(image_url, ppts)
                     f.write(' '.join(str(ppt) for ppt in ppts[1:]))
         print('All done!')  
 
