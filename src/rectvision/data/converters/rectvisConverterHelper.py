@@ -149,10 +149,7 @@ class GenerateAnnotation():
             current_img_path = image_name
             current_img_width, current_img_height, current_img_depth = image_data['image_width'], image_data['image_height'], image_data['image_channels']
             points = image_data['points']
-            # print(points)
             labels = image_data['labels']
-            print("image url: ", image_data['image_url'])
-            # print(labels)
             image_ppts = []
 
             if self.export_format == 'labelme-json':
@@ -191,7 +188,6 @@ class GenerateAnnotation():
                     x_min, y_min, x_max, y_max = min(point_x), min(point_y), max(point_x), max(point_y)
                     width, height = x_max - x_min, y_max - y_min
                     x_center, y_center,  = x_min + (width/2), y_min + (height/2)
-                    print(current_img_path, x_min, y_min, x_max, y_max, current_img_width, current_img_height)
                     image_ppts.append([current_img_path, label_id, x_center/current_img_width, 
                                        y_center/current_img_height, width/current_img_width, height/current_img_height, '\n' ])
                 self.ppts.append(image_ppts)
@@ -436,6 +432,7 @@ class GenerateAnnotation():
             out_annotation_path = os.path.join(validation_out_annotation_dir, self.replace_extension(image_ppt[0][0], '.txt'))
             with open(out_annotation_path, 'w') as f:
                 for ppts in image_ppt:
+                    print(image_url, ppts)
                     f.write(' '.join(str(ppt) for ppt in ppts[1:]))
         print('All done!')  
 
