@@ -6,7 +6,7 @@ token = "6a2884f385d006c51bc22c6242f153c5a250e7b1235f6ea10031140daa93287a316f4c0
 rv = RectvisionConverter(0.5, 0.3, 0.2, 'yolo-txt', token = token)
 
 current_dir = os.getcwd()
-project_dir = current_dir + '/rectvision'
+project_dir = current_dir 
  
 
 num_classes, img_size, batch_size, num_epochs, labels, project_name, project_dir = 2, 512, 2, 2, ["test", "cat", "dog"], "mask_detect", project_dir
