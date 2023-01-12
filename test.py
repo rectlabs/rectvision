@@ -9,14 +9,14 @@ current_dir = os.getcwd()
 project_dir = current_dir 
  
 
-num_classes, img_size, batch_size, num_epochs, labels, project_name, project_dir = 2, 512, 2, 2000, ["test", "cat", "dog"], "mask_detect", project_dir
-model_yolo = models.Yolov5(num_classes, img_size, batch_size, num_epochs, labels, project_name, project_dir)
+# num_classes, img_size, batch_size, num_epochs, labels, project_name, project_dir = 2, 512, 2, 2000, ["test", "cat", "dog"], "mask_detect", project_dir
+# model_yolo = models.Yolov5(num_classes, img_size, batch_size, num_epochs, labels, project_name, project_dir)
 
-# training
-model_yolo.train()
+# # training
+# model_yolo.train()
 
-# get map
-model_yolo.get_map()
+# # get map
+# model_yolo.get_map()
 
-# run inference
-model_yolo.inference(images=project_dir  + '/dataset/test/images', confidence=0.0, out_dir=project_dir + '/detections/')
+# # run inference
+# model_yolo.inference(images=project_dir  + '/dataset/test/images', confidence=0.0, out_dir=project_dir + '/detections/')
