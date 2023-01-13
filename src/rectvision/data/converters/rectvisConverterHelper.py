@@ -39,10 +39,13 @@ class GenerateAnnotation():
         #create results directory
         self.valid_path('dataset')
         #generate labelmap
+        # TODO
         self.label_to_id_file_path = os.path.join('dataset', 'labelmap.txt')
         self.train_path = self.valid_path(os.path.join('dataset', 'train'))
         self.test_path = self.valid_path(os.path.join('dataset', 'test'))
         self.validation_path = self.valid_path(os.path.join('dataset', 'validation'))
+        self.images_folder = self.valid_path(os.path.join('dataset', 'images'))
+        self.labels_folder = self.valid_path(os.path.join('dataset', 'labels'))
         self.generate_labelmap(self.labels, self.label_to_id_file_path)
         self.label_to_id = self.read_dictionary(self.label_to_id_file_path)
 
@@ -404,9 +407,9 @@ class GenerateAnnotation():
             #download image
             image_name = image_ppt[0][0]
             image_url = self.annotations[image_name]['image_url']
-            self.download_image(image_url, os.path.join(self.train_path, 'images'))       
+            self.download_image(image_url, os.path.join(self.images_folder, 'train'))       
             #write to txt file
-            train_out_annotation_dir = self.valid_path(os.path.join(self.train_path, 'labels'))
+            train_out_annotation_dir = self.valid_path(os.path.join(self.labels_folder, 'train'))
             out_annotation_path = os.path.join(train_out_annotation_dir, self.replace_extension(image_ppt[0][0], '.txt'))
             with open(out_annotation_path, 'w') as f:
                 for ppts in image_ppt:
@@ -415,9 +418,9 @@ class GenerateAnnotation():
             #download image
             image_name = image_ppt[0][0]
             image_url = self.annotations[image_name]['image_url']
-            self.download_image(image_url, os.path.join(self.test_path, 'images'))        
+            self.download_image(image_url, os.path.join(self.images_folder, 'test'))        
             #write to txt file
-            test_out_annotation_dir = self.valid_path(os.path.join(self.test_path, 'labels'))
+            test_out_annotation_dir = self.valid_path(os.path.join(self.labels_folder, 'test'))
             out_annotation_path = os.path.join(test_out_annotation_dir, self.replace_extension(image_ppt[0][0], '.txt'))
             with open(out_annotation_path, 'w') as f:
                 for ppts in image_ppt:
@@ -426,9 +429,9 @@ class GenerateAnnotation():
             #download image
             image_name = image_ppt[0][0]
             image_url = self.annotations[image_name]['image_url']
-            self.download_image(image_url, os.path.join(self.validation_path, 'images'))    
+            self.download_image(image_url, os.path.join(self.images_folder, 'val'))    
             #write to txt file
-            validation_out_annotation_dir = self.valid_path(os.path.join(self.validation_path, 'labels'))
+            validation_out_annotation_dir = self.valid_path(os.path.join(self.labels_folder, 'val'))
             out_annotation_path = os.path.join(validation_out_annotation_dir, self.replace_extension(image_ppt[0][0], '.txt'))
             with open(out_annotation_path, 'w') as f:
                 for ppts in image_ppt:

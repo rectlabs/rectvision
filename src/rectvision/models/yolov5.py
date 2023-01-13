@@ -22,11 +22,6 @@ class Yolov5():
 
     def setup(self):
         self.git_clone("https://github.com/ultralytics/yolov5")
-        # copy to yolov5 in project_dir
-        # try:
-        #   shutil.copytree('yolov5', os.path.join(self.project_dir, 'yolov5'))
-        # except FileExistsError as err:
-        #   print("file exists...proceed")
         os.chdir(os.path.join(self.project_dir, "yolov5"))
         subprocess.run([sys.executable, "-m", "pip", "install", "-r", "requirements.txt"])
 
@@ -37,15 +32,14 @@ class Yolov5():
     def git_clone(self, url):
         process = subprocess.run(["git", "clone", url], capture_output=True, text=True)
         if process.returncode == 0:
-          print('Cloned Yolov5 repo')
         else:
-          print('Something went wrong')
+          print('Something went wrong!!!')
           print(process.stderr)
     
     def create_data_config(self):
-        train_path = os.path.join(self.project_dir, "dataset/train/images")
-        test_path = os.path.join(self.project_dir, "dataset/train/images")
-        val_path = os.path.join(self.project_dir, "dataset/train/images")
+        train_path = os.path.join(self.project_dir, "dataset/images/train")
+        test_path = os.path.join(self.project_dir, "dataset/images/test")
+        val_path = os.path.join(self.project_dir, "dataset/images/val")
         configs = {"train": train_path,
                    "val": val_path,
                    "test": test_path,
@@ -64,7 +58,6 @@ class Yolov5():
         process = subprocess.run(["python", self.train_model, 
                         "--img", str(self.img_size),
                         "--cfg", "yolov5s.yaml",
-                        "--hyp", "hyp.scratch-low.yaml",
                         "--batch", str(self.batch_size),
                         "--epochs", str(self.num_epochs),
                         "--data", self.data_yaml,
