@@ -4,6 +4,7 @@ import os, uuid, shutil
 import getpass
 import jwt, cv2
 import requests
+from tqdm import tqdm
 from .rectvisConverterHelper import GenerateAnnotation
 
 def download_url_to_disk(image_url):
@@ -35,7 +36,7 @@ def get_image_widith_height(image_url):
     return height, width, channel
 
 class RectvisionConverter():
-    def __init__(self, train_split, test_split, validation_split, export_format, token = None): 
+    def __init__(self, train_split=0.6, test_split=0.2, validation_split=0.2, export_format='yolo-txt', token = None): 
         if token == None:       
             self.token = getpass.getpass('Enter Token: ')
         else:
@@ -49,7 +50,6 @@ class RectvisionConverter():
             self.token = getpass.getpass('Enter Token: ')
             request_url = base_url + self.token
             self.login_response = requests.get(request_url)
-        print('User Authenticated!')
         self.export_format = export_format
         self.train_split = train_split
         self.test_split = test_split
@@ -91,7 +91,9 @@ class RectvisionConverter():
         annotation_prop = annotation_properties['data']['annotations']
 
         rearranged_annotations = {}
-        for annon_prop in annotation_prop:
+        total_data = len(annotation_prop)
+        data_split = random.choices(['train', 'test', 'val'], weights = [self.train_split, self.test_split, validation_split], k=total_data)
+        for data_tag, annon_prop in tqdm(zip(data_split, annotation_prop), desc = 'getting annotations'):
             image_name = annon_prop['file']['name']
             if image_name not in rearranged_annotations:
                 rearranged_annotations[image_name] = {}
@@ -108,7 +110,7 @@ class RectvisionConverter():
             rearranged_annotations[image_name]['image_channels'] = 3
             rearranged_annotations[image_name]['points'].append(annon_prop['points'])
             rearranged_annotations[image_name]['labels'].append(annon_prop['label']['value'])
-
+            rearranged_annotations[image_name]['data_tag'].append(data_tag)
         return rearranged_annotations
       
 

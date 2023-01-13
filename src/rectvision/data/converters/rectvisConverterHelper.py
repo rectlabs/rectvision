@@ -12,6 +12,8 @@ import os
 import csv
 import ast
 import xml.etree.ElementTree as ET
+from tqdm import tqdm
+
 
 class NpEncoder(json.JSONEncoder):
     def default(self, obj):
@@ -48,6 +50,7 @@ class GenerateAnnotation():
         self.labels_folder = self.valid_path(os.path.join('dataset', 'labels'))
         self.generate_labelmap(self.labels, self.label_to_id_file_path)
         self.label_to_id = self.read_dictionary(self.label_to_id_file_path)
+
 
         #insert which annotation conversion method should be called
         if self.export_format == 'labelme-json':
@@ -148,7 +151,7 @@ class GenerateAnnotation():
 
     def extract_info_from_json(self):
         self.ppts = []
-        for image_name, image_data in self.annotations.items():
+        for image_name, image_data in tqdm(self.annotations.items(), desc = 'converting data'):
             current_img_path = image_name
             current_img_width, current_img_height, current_img_depth = image_data['image_width'], image_data['image_height'], image_data['image_channels']
             points = image_data['points']
@@ -398,45 +401,60 @@ class GenerateAnnotation():
         print('All done!') 
 
     def rectjson_to_yoloTxt(self):
-        print('Starting conversion...')
-        #get all image info
-        self.extract_info_from_json()
-        #split to train, test, validation
-        self.ppts_train, self.ppts_test, self.ppts_valid = self.split(self.ppts, self.train_ratio, self.test_ratio, self.valid_ratio)
-        for image_ppt in self.ppts_train:     
-            #download image
-            image_name = image_ppt[0][0]
-            image_url = self.annotations[image_name]['image_url']
-            self.download_image(image_url, os.path.join(self.images_folder, 'train'))       
-            #write to txt file
-            train_out_annotation_dir = self.valid_path(os.path.join(self.labels_folder, 'train'))
-            out_annotation_path = os.path.join(train_out_annotation_dir, self.replace_extension(image_ppt[0][0], '.txt'))
-            with open(out_annotation_path, 'w') as f:
-                for ppts in image_ppt:
-                    f.write(' '.join(str(ppt) for ppt in ppts[1:]))
-        for image_ppt in self.ppts_test:    
-            #download image
-            image_name = image_ppt[0][0]
-            image_url = self.annotations[image_name]['image_url']
-            self.download_image(image_url, os.path.join(self.images_folder, 'test'))        
-            #write to txt file
-            test_out_annotation_dir = self.valid_path(os.path.join(self.labels_folder, 'test'))
-            out_annotation_path = os.path.join(test_out_annotation_dir, self.replace_extension(image_ppt[0][0], '.txt'))
-            with open(out_annotation_path, 'w') as f:
-                for ppts in image_ppt:
-                    f.write(' '.join(str(ppt) for ppt in ppts[1:]))
-        for image_ppt in self.ppts_valid:        
-            #download image
-            image_name = image_ppt[0][0]
-            image_url = self.annotations[image_name]['image_url']
-            self.download_image(image_url, os.path.join(self.images_folder, 'val'))    
-            #write to txt file
-            validation_out_annotation_dir = self.valid_path(os.path.join(self.labels_folder, 'val'))
-            out_annotation_path = os.path.join(validation_out_annotation_dir, self.replace_extension(image_ppt[0][0], '.txt'))
-            with open(out_annotation_path, 'w') as f:
-                for ppts in image_ppt:
-                    # print(image_url, ppts)
-                    f.write(' '.join(str(ppt) for ppt in ppts[1:]))
+        self.ppts = []
+        for image_name, image_data in tqdm(self.annotations.items(), desc = 'converting data'):
+            current_img_path = image_name
+            current_img_width, current_img_height, current_img_depth = image_data['image_width'], image_data['image_height'], image_data['image_channels']
+            points = image_data['points']
+            labels = image_data['labels']
+            image_ppts = []
+
+            for idx, point in enumerate(points):
+                label = labels[idx]
+                label_id = self.label_to_id[label]
+                point_x = [coord[0] for coord in point]
+                point_y = [coord[1] for coord in point]
+                x_min, y_min, x_max, y_max = min(point_x), min(point_y), max(point_x), max(point_y)
+                width, height = x_max - x_min, y_max - y_min
+                x_center, y_center,  = x_min + (width/2), y_min + (height/2)
+                image_ppts.append([current_img_path, label_id, 
+                                    np.abs(x_center)/current_img_width, 
+                                    np.abs(y_center)/current_img_height, 
+                                    np.abs(width)/current_img_width, 
+                                    np.abs(height)/current_img_height, '\n' ])
+
+            # #split to train, test, validation
+            decision = self.annotations[image_name]['data_tag']
+            
+            if decision == 'train':
+                image_url = self.annotations[image_name]['image_url']
+                self.download_image(image_url, os.path.join(self.images_folder, 'train'))       
+                #write to txt file
+                train_out_annotation_dir = self.valid_path(os.path.join(self.labels_folder, 'train'))
+                out_annotation_path = os.path.join(train_out_annotation_dir, self.replace_extension(image_ppt[0][0], '.txt'))
+                with open(out_annotation_path, 'w') as f:
+                    for ppts in image_ppts:
+                        f.write(' '.join(str(ppt) for ppt in ppts[1:]))
+
+            elif decision == 'test':
+                image_url = self.annotations[image_name]['image_url']
+                self.download_image(image_url, os.path.join(self.images_folder, 'test'))        
+                #write to txt file
+                test_out_annotation_dir = self.valid_path(os.path.join(self.labels_folder, 'test'))
+                out_annotation_path = os.path.join(test_out_annotation_dir, self.replace_extension(image_ppt[0][0], '.txt'))
+                with open(out_annotation_path, 'w') as f:
+                    for ppts in image_ppts:
+                        f.write(' '.join(str(ppt) for ppt in ppts[1:]))
+
+            else:
+                image_url = self.annotations[image_name]['image_url']
+                self.download_image(image_url, os.path.join(self.images_folder, 'val'))    
+                #write to txt file
+                validation_out_annotation_dir = self.valid_path(os.path.join(self.labels_folder, 'val'))
+                out_annotation_path = os.path.join(validation_out_annotation_dir, self.replace_extension(image_ppt[0][0], '.txt'))
+                with open(out_annotation_path, 'w') as f:
+                    for ppts in image_ppts:
+                        f.write(' '.join(str(ppt) for ppt in ppts[1:]))
         print('All done!')  
 
     def rectjson_to_yolov3kerasTxt(self):
