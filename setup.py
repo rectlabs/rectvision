@@ -3,11 +3,11 @@ import codecs
 import os, sys, subprocess
 
 # install torch with gpu
-os.system("pip install torch==1.9.0+cu111 torchvision==0.10.0+cu111 -f https://download.pytorch.org/whl/torch_stable.html")
+# os.system("pip install torch==1.9.0+cu111 torchvision==0.10.0+cu111 -f https://download.pytorch.org/whl/torch_stable.html")
 
-# install detectron2
-detectron2 = "python -m pip install detectron2 -f https://dl.fbaipublicfiles.com/detectron2/wheels/cu111/torch1.9/index.html"
-os.system(detectron2)
+# # install detectron2
+# detectron2 = "python -m pip install detectron2 -f https://dl.fbaipublicfiles.com/detectron2/wheels/cu111/torch1.9/index.html"
+# os.system(detectron2)
 
 here = os.path.abspath(os.path.dirname(__file__))
 
