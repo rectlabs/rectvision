@@ -2,19 +2,13 @@ from setuptools import setup, find_packages
 import codecs
 import os, sys, subprocess
 
-# install torch with gpu
-# os.system("pip install torch==1.9.0+cu111 torchvision==0.10.0+cu111 -f https://download.pytorch.org/whl/torch_stable.html")
-
-# # install detectron2
-# detectron2 = "python -m pip install detectron2 -f https://dl.fbaipublicfiles.com/detectron2/wheels/cu111/torch1.9/index.html"
-# os.system(detectron2)
 
 here = os.path.abspath(os.path.dirname(__file__))
 
 with codecs.open(os.path.join(here, "README.md"), encoding="utf-8") as fh:
     long_description = "\n" + fh.read()
 
-VERSION = '3.0.37'
+VERSION = '3.0.38'
 DESCRIPTION = 'A low-code tool to help create your own AI'
 LONG_DESCRIPTION = 'A package that allows to build your own computer visions and NLP systems'
 
