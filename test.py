@@ -1,0 +1,6 @@
+from src.rectvision import data, models, processors
+from src.rectvision.data import converters
+
+ptokens = "6a2884f385d006c51bc22c6242f153c5a250e7b1235f6ea10031140daa93287a316f4c06a419f96d89f6725029e904c851a857a2b80def791b34f7d981894da7e1864f9282662cfa72ac003bc32f58f7fd0cd3b0a7278e0dec765a826bc17f975b6fd9eefe9e7ffbbae1eccff6176bbdb895bc862a01f7272c239d58b43cd2219c47f5ecd80eaf4170c97407f309d234"
+converters.RectvisionConverter(0.6, 0.2, 0.2, 'yolo-txt', ptokens = ptokens)
+
