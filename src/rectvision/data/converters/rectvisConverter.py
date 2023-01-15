@@ -103,6 +103,9 @@ class RectvisionConverter():
                 rearranged_annotations[image_name]['points'] = []
             if 'labels' not in rearranged_annotations[image_name]:
                 rearranged_annotations[image_name]['labels'] = []
+            if 'data_tag' not in rearranged_annotations[image_name]:
+                rearranged_annotations[image_name]['data_tag'] = None
+
             rearranged_annotations[image_name]['image_id'] = annon_prop['file_id']
             rearranged_annotations[image_name]['image_url'] = annon_prop['file']['url']
             rearranged_annotations[image_name]['image_height'] =annon_prop['image_height']
