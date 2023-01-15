@@ -32,6 +32,7 @@ class Yolov5():
     def git_clone(self, url):
         process = subprocess.run(["git", "clone", url], capture_output=True, text=True)
         if process.returncode == 0:
+          pass
         else:
           print('Something went wrong!!!')
           print(process.stderr)
