@@ -92,7 +92,7 @@ class RectvisionConverter():
 
         rearranged_annotations = {}
         total_data = len(annotation_prop)
-        data_split = random.choices(['train', 'test', 'val'], weights = [self.train_split, self.test_split, validation_split], k=total_data)
+        data_split = random.choices(['train', 'test', 'val'], weights = [self.train_split, self.test_split, self.validation_split], k=total_data)
         for data_tag, annon_prop in tqdm(zip(data_split, annotation_prop), desc = 'getting annotations'):
             image_name = annon_prop['file']['name']
             if image_name not in rearranged_annotations:
