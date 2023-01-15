@@ -2,7 +2,7 @@
 from json import loads
 import os, uuid, shutil
 import getpass
-import jwt, cv2
+import jwt, cv2, random
 import requests
 from tqdm import tqdm
 from .rectvisConverterHelper import GenerateAnnotation
