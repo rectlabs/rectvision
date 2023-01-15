@@ -431,7 +431,7 @@ class GenerateAnnotation():
                 self.download_image(image_url, os.path.join(self.images_folder, 'train'))       
                 #write to txt file
                 train_out_annotation_dir = self.valid_path(os.path.join(self.labels_folder, 'train'))
-                out_annotation_path = os.path.join(train_out_annotation_dir, self.replace_extension(image_ppt[0][0], '.txt'))
+                out_annotation_path = os.path.join(train_out_annotation_dir, self.replace_extension(image_ppts[0][0], '.txt'))
                 with open(out_annotation_path, 'w') as f:
                     for ppts in image_ppts:
                         f.write(' '.join(str(ppt) for ppt in ppts[1:]))
@@ -441,7 +441,7 @@ class GenerateAnnotation():
                 self.download_image(image_url, os.path.join(self.images_folder, 'test'))        
                 #write to txt file
                 test_out_annotation_dir = self.valid_path(os.path.join(self.labels_folder, 'test'))
-                out_annotation_path = os.path.join(test_out_annotation_dir, self.replace_extension(image_ppt[0][0], '.txt'))
+                out_annotation_path = os.path.join(test_out_annotation_dir, self.replace_extension(image_ppts[0][0], '.txt'))
                 with open(out_annotation_path, 'w') as f:
                     for ppts in image_ppts:
                         f.write(' '.join(str(ppt) for ppt in ppts[1:]))
@@ -451,7 +451,7 @@ class GenerateAnnotation():
                 self.download_image(image_url, os.path.join(self.images_folder, 'val'))    
                 #write to txt file
                 validation_out_annotation_dir = self.valid_path(os.path.join(self.labels_folder, 'val'))
-                out_annotation_path = os.path.join(validation_out_annotation_dir, self.replace_extension(image_ppt[0][0], '.txt'))
+                out_annotation_path = os.path.join(validation_out_annotation_dir, self.replace_extension(image_ppts[0][0], '.txt'))
                 with open(out_annotation_path, 'w') as f:
                     for ppts in image_ppts:
                         f.write(' '.join(str(ppt) for ppt in ppts[1:]))
