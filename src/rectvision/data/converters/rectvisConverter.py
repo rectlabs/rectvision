@@ -113,7 +113,7 @@ class RectvisionConverter():
             rearranged_annotations[image_name]['image_channels'] = 3
             rearranged_annotations[image_name]['points'].append(annon_prop['points'])
             rearranged_annotations[image_name]['labels'].append(annon_prop['label']['value'])
-            rearranged_annotations[image_name]['data_tag'].append(data_tag)
+            rearranged_annotations[image_name]['data_tag'] = data_tag
         return rearranged_annotations
       
 
