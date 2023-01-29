@@ -69,13 +69,13 @@ class Yolov5():
         process_str = "python3 %s --cfg yolov5s.yaml --batch %s --epochs %s --data %s --weights yolov5s.pt --workers 24 --name %s --cache"
         os.system(process_str.format(self.train_model, self.img_size, self.batch_size, self.num_epochs, self.data_yaml, self.project_dir))
         #if process.returncode == 0:
-        print('Trained successfully!') 
-        print(process.stdout)         
-        print('Check {} for training logs'.format(os.path.join(self.project_dir, "yolov5/runs/train", self.project_name)))
-        print('More importantly, Check {} for progression of training performance'.format(os.path.join(self.project_dir, "yolov5/runs/train", self.project_name, '/results.csv')))
-        # else:
-        #   print('Training could not be completed. Check error below for more details')
-        #   print(process.stderr)
+        # print('Trained successfully!') 
+        # print(process.stdout)         
+        # print('Check {} for training logs'.format(os.path.join(self.project_dir, "yolov5/runs/train", self.project_name)))
+        # print('More importantly, Check {} for progression of training performance'.format(os.path.join(self.project_dir, "yolov5/runs/train", self.project_name, '/results.csv')))
+        # # else:
+        # #   print('Training could not be completed. Check error below for more details')
+        # #   print(process.stderr)
       
     def train_file_exists(self):
         self.no_setup()
