@@ -56,26 +56,26 @@ class Yolov5():
         self.create_data_config()
         self.train_model = os.path.join(self.project_dir, "yolov5/train.py")
         print('Training YOLOv5 Model...')
-        # process = subprocess.run(["python", self.train_model, 
-        #                 "--img", str(self.img_size),
-        #                 "--cfg", "yolov5s.yaml",
-        #                 "--batch", str(self.batch_size),
-        #                 "--epochs", str(self.num_epochs),
-        #                 "--data", self.data_yaml,
-        #                 "--weights", "yolov5s.pt",
-        #                 "--workers", "24",
-        #                 "--name", self.project_name,
-        #                 "--cache"], capture_output=True, text=True)
-        process_str = "python3 %s --cfg yolov5s.yaml --batch %s --epochs %s --data %s --weights yolov5s.pt --workers 24 --name %s --cache"
-        os.system(process_str.format(self.train_model, self.img_size, self.batch_size, self.num_epochs, self.data_yaml, self.project_dir))
-        #if process.returncode == 0:
-        # print('Trained successfully!') 
-        # print(process.stdout)         
-        # print('Check {} for training logs'.format(os.path.join(self.project_dir, "yolov5/runs/train", self.project_name)))
-        # print('More importantly, Check {} for progression of training performance'.format(os.path.join(self.project_dir, "yolov5/runs/train", self.project_name, '/results.csv')))
-        # # else:
-        # #   print('Training could not be completed. Check error below for more details')
-        # #   print(process.stderr)
+        process = subprocess.run(["python", self.train_model, 
+                        "--img", str(self.img_size),
+                        "--cfg", "yolov5s.yaml",
+                        "--batch", str(self.batch_size),
+                        "--epochs", str(self.num_epochs),
+                        "--data", self.data_yaml,
+                        "--weights", "yolov5s.pt",
+                        "--workers", "24",
+                        "--name", self.project_name,
+                        "--cache"], capture_output=True, text=True)
+        # process_str = "python3 %s --cfg yolov5s.yaml --batch %s --epochs %s --data %s --weights yolov5s.pt --workers 24 --name %s --cache"
+        # os.system(process_str.format(self.train_model, self.img_size, self.batch_size, self.num_epochs, self.data_yaml, self.project_dir))
+        if process.returncode == 0:
+          print('Trained successfully!') 
+          print(process.stdout)         
+          print('Check {} for training logs'.format(os.path.join(self.project_dir, "yolov5/runs/train", self.project_name)))
+          print('More importantly, Check {} for progression of training performance'.format(os.path.join(self.project_dir, "yolov5/runs/train", self.project_name, '/results.csv')))
+        else:
+          print('Training could not be completed. Check error below for more details')
+          print(process.stderr)
       
     def train_file_exists(self):
         self.no_setup()
