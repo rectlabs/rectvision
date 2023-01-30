@@ -5,7 +5,7 @@ import yaml
 import shutil
 
 class Yolov5():
-    def __init__(self, num_classes, img_size, batch_size, num_epochs, labels, project_name, project_dir):
+    def __init__(self, num_classes = 3, img_size= 640, batch_size =12, num_epochs = 500, labels = ['test', 'dog', 'cat'], project_name = 'yolovision', project_dir = '../'):
         self.num_classes = num_classes
         self.img_size = 640
         self.batch_size = batch_size
@@ -56,7 +56,7 @@ class Yolov5():
         self.create_data_config()
         self.train_model = os.path.join(self.project_dir, "yolov5/train.py")
         print('Training YOLOv5 Model...')
-        process = subprocess.run(["python", self.train_model, 
+        process = subprocess.run(["python3", self.train_model, 
                         "--img", str(self.img_size),
                         "--cfg", "yolov5s.yaml",
                         "--batch", str(self.batch_size),
@@ -66,8 +66,6 @@ class Yolov5():
                         "--workers", "24",
                         "--name", self.project_name,
                         "--cache"], capture_output=True, text=True)
-        # process_str = "python3 %s --cfg yolov5s.yaml --batch %s --epochs %s --data %s --weights yolov5s.pt --workers 24 --name %s --cache"
-        # os.system(process_str.format(self.train_model, self.img_size, self.batch_size, self.num_epochs, self.data_yaml, self.project_dir))
         if process.returncode == 0:
           print('Trained successfully!') 
           print(process.stdout)         
