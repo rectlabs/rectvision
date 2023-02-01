@@ -38,9 +38,13 @@ class Yolov5():
           print(process.stderr)
     
     def create_data_config(self):
-        train_path = os.path.join(self.project_dir, "dataset/images/train")
-        test_path = os.path.join(self.project_dir, "dataset/images/test")
-        val_path = os.path.join(self.project_dir, "dataset/images/val")
+        try:
+          os.system("cp -r ./dataset/ ./yolov5/dataset/")
+        except Exception as err:
+          print("dataset not found!!!")
+        train_path = os.path.join(self.project_dir, "yolov5/dataset/images/train/")
+        test_path = os.path.join(self.project_dir, "yolov5/dataset/images/test/")
+        val_path = os.path.join(self.project_dir, "yolov5/dataset/images/val/")
         configs = {"train": train_path,
                    "val": val_path,
                    "test": test_path,
