@@ -43,9 +43,9 @@ class GenerateAnnotation():
         #generate labelmap
         # TODO
         self.label_to_id_file_path = os.path.join('dataset', 'labelmap.txt')
-        self.train_path = './dataset'
-        self.test_path = './dataset'
-        self.validation_path = './dataset' #self.valid_path(os.path.join('dataset', 'validation'))
+        self.train_path = './dataset/train'
+        self.test_path = './dataset/test'
+        self.validation_path = './dataset/val' #self.valid_path(os.path.join('dataset', 'validation'))
         self.images_folder = self.valid_path(os.path.join('dataset', 'images'))
         self.labels_folder = self.valid_path(os.path.join('dataset', 'labels'))
         self.generate_labelmap(self.labels, self.label_to_id_file_path)
@@ -265,7 +265,7 @@ class GenerateAnnotation():
             #download image
             image_name = image_ppt[0][0]
             image_url = self.annotations[image_name]['image_url']
-            self.download_image(image_url, os.path.join(self.train_path, 'images'))
+            self.download_image(image_url, self.train_path)
             output_json_dict = {
                 'shapes': [],
                 'imagePath': ''
@@ -274,7 +274,7 @@ class GenerateAnnotation():
                 img_path, label, shape_type, points = ppt
                 #update imagePath
                 output_json_dict['imagePath']=img_path
-                data = labelme.LabelFile.load_image_file(os.path.join(self.train_path, 'images', img_path))
+                data = labelme.LabelFile.load_image_file(os.path.join(self.train_path, img_path))
                 output_json_dict['imageData']=base64.b64encode(data).decode('utf-8')
                 #shapes info
                 shapes_info = {
@@ -288,7 +288,7 @@ class GenerateAnnotation():
                 shapes_info['shape_type'] = shape_type
                 output_json_dict['shapes'].append(shapes_info)
             #write to json file
-            train_out_annotation_dir = self.valid_path(os.path.join(self.train_path, 'annotations'))
+            train_out_annotation_dir = self.valid_path(self.train_path)
             out_annotation_path = os.path.join(train_out_annotation_dir, self.replace_extension(image_ppt[0][0], '.json'))
             with open(out_annotation_path, 'w') as f:
                 output_json = json.dumps(output_json_dict, indent=4, cls=NpEncoder)
@@ -297,7 +297,7 @@ class GenerateAnnotation():
             #download image
             image_name = image_ppt[0][0]
             image_url = self.annotations[image_name]['image_url']
-            self.download_image(image_url, os.path.join(self.test_path, 'images'))
+            self.download_image(image_url, self.test_path)
             output_json_dict = {
                 'shapes': [],
                 'imagePath': ''
@@ -306,7 +306,7 @@ class GenerateAnnotation():
                 img_path, label, shape_type, points = ppt
                 #update imagePath
                 output_json_dict['imagePath']=img_path
-                data = labelme.LabelFile.load_image_file(os.path.join(self.test_path, 'images', img_path))
+                data = labelme.LabelFile.load_image_file(os.path.join(self.test_path, img_path))
                 output_json_dict['imageData']=base64.b64encode(data).decode('utf-8')
                 #shapes info
                 shapes_info = {
@@ -320,7 +320,7 @@ class GenerateAnnotation():
                 shapes_info['shape_type'] = shape_type
                 output_json_dict['shapes'].append(shapes_info)
             #write to json file
-            test_out_annotation_dir = self.valid_path(os.path.join(self.test_path, 'annotations'))
+            test_out_annotation_dir = self.valid_path(self.test_path)
             out_annotation_path = os.path.join(test_out_annotation_dir, self.replace_extension(image_ppt[0][0], '.json'))
             with open(out_annotation_path, 'w') as f:
                 output_json = json.dumps(output_json_dict, indent=4, cls=NpEncoder)
@@ -329,7 +329,7 @@ class GenerateAnnotation():
             #download image
             image_name = image_ppt[0][0]
             image_url = self.annotations[image_name]['image_url']
-            self.download_image(image_url, os.path.join(self.validation_path, 'images'))
+            self.download_image(image_url, self.validation_path)
             output_json_dict = {
                 'shapes': [],
                 'imagePath': ''
@@ -338,7 +338,7 @@ class GenerateAnnotation():
                 img_path, label, shape_type, points = ppt
                 #update imagePath
                 output_json_dict['imagePath']=img_path
-                data = labelme.LabelFile.load_image_file(os.path.join(self.validation_path, 'images', img_path))
+                data = labelme.LabelFile.load_image_file(os.path.join(self.validation_path, img_path))
                 output_json_dict['imageData']=base64.b64encode(data).decode('utf-8')
                 #shapes info
                 shapes_info = {
@@ -352,7 +352,7 @@ class GenerateAnnotation():
                 shapes_info['shape_type'] = shape_type
                 output_json_dict['shapes'].append(shapes_info)
             #write to json file
-            validation_out_annotation_dir = self.valid_path(os.path.join(self.validation_path, 'annotations'))
+            validation_out_annotation_dir = self.valid_path(self.validation_path)
             out_annotation_path = os.path.join(validation_out_annotation_dir, self.replace_extension(image_ppt[0][0], '.json'))
             with open(out_annotation_path, 'w') as f:
                 output_json = json.dumps(output_json_dict, indent=4, cls=NpEncoder)
