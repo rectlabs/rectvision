@@ -45,7 +45,7 @@ class GenerateAnnotation():
         self.label_to_id_file_path = os.path.join('dataset', 'labelmap.txt')
         self.train_path = './dataset'
         self.test_path = './dataset'
-        self.validation_path = None #self.valid_path(os.path.join('dataset', 'validation'))
+        self.validation_path = './dataset' #self.valid_path(os.path.join('dataset', 'validation'))
         self.images_folder = self.valid_path(os.path.join('dataset', 'images'))
         self.labels_folder = self.valid_path(os.path.join('dataset', 'labels'))
         self.generate_labelmap(self.labels, self.label_to_id_file_path)
