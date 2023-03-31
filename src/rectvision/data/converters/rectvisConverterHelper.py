@@ -59,6 +59,8 @@ class GenerateAnnotation():
             self.rectjson_to_darknetTxt()
         elif self.export_format == 'yolo-txt':
             self.rectjson_to_yoloTxt()
+        elif self.export_format == 'yolo-seg-txt':
+            self.rectjson_to_yoloSegTxt()
         elif self.export_format == 'xml':
             self.rectjson_to_xml()
         elif self.export_format == 'yolov3-keras-txt':
@@ -196,6 +198,25 @@ class GenerateAnnotation():
                     x_center, y_center,  = (x_min + x_max)/2, (y_min + y_max)/2
                     image_ppts.append([current_img_path, label_id, x_center/current_img_width, 
                                        y_center/current_img_height, width/current_img_width, height/current_img_height, '\n' ])
+                self.ppts.append(image_ppts)
+
+            elif self.export_format == "yolo-seg-txt":
+                 for idx, point in enumerate(points):
+                    label = labels[idx]
+                    label_id = self.label_to_id[label]
+                    point_x = [coord[0] for coord in point]
+                    point_y = [coord[1] for coord in point]
+                    x_min, y_min, x_max, y_max = min(point_x), min(point_y), max(point_x), max(point_y)
+                    width, height = x_max - x_min, y_max - y_min
+                    # x_center, y_center,  = (x_min + x_max)/2, (y_min + y_max)/2
+                    pk = []
+                    for x, y in zip(point_x, point_y):
+                        pk.append(np.abs(x)/current_img_width)
+                        pk.append(np.abs(y)/current_img_height)
+                    pre_data = [current_img_path, label_id]
+                    pre_data.extend(pk)
+                    pre_data.append('\n')
+                    image_ppts.append(pre_data)
                 self.ppts.append(image_ppts)
 
             elif self.export_format == 'yolov3-keras-txt':
@@ -399,6 +420,66 @@ class GenerateAnnotation():
                 for ppts in image_ppt:
                     f.write(' '.join(str(ppt) for ppt in ppts[1:]))
         print('All done!') 
+    
+    def rectjson_to_yoloSegTxt(self):
+        self.ppts = []
+        for image_name, image_data in tqdm(self.annotations.items(), desc = 'converting data'):
+            current_img_path = image_name
+            current_img_width, current_img_height, current_img_depth = image_data['image_width'], image_data['image_height'], image_data['image_channels']
+            points = image_data['points']
+            labels = image_data['labels']
+            image_ppts = []
+
+            for idx, point in enumerate(points):
+                label = labels[idx]
+                label_id = self.label_to_id[label]
+                point_x = [coord[0] for coord in point]
+                point_y = [coord[1] for coord in point]
+                x_min, y_min, x_max, y_max = min(point_x), min(point_y), max(point_x), max(point_y)
+                width, height = x_max - x_min, y_max - y_min
+                pk = []
+                for x, y in zip(point_x, point_y):
+                    pk.append(np.abs(x)/current_img_width)
+                    pk.append(np.abs(y)/current_img_height)
+                pre_data = [current_img_path, label_id]
+                pre_data.extend(pk)
+                pre_data.append('\n')
+                image_ppts.append(pre_data)
+
+            # #split to train, test, validation
+            decision = self.annotations[image_name]['data_tag']
+            
+            if decision == 'train':
+                image_url = self.annotations[image_name]['image_url']
+                self.download_image(image_url, os.path.join(self.images_folder, 'train'))       
+                #write to txt file
+                train_out_annotation_dir = self.valid_path(os.path.join(self.labels_folder, 'train'))
+                out_annotation_path = os.path.join(train_out_annotation_dir, self.replace_extension(image_ppts[0][0], '.txt'))
+                with open(out_annotation_path, 'w') as f:
+                    for ppts in image_ppts:
+                        f.write(' '.join(str(ppt) for ppt in ppts[1:]))
+
+            elif decision == 'test':
+                image_url = self.annotations[image_name]['image_url']
+                self.download_image(image_url, os.path.join(self.images_folder, 'test'))        
+                #write to txt file
+                test_out_annotation_dir = self.valid_path(os.path.join(self.labels_folder, 'test'))
+                out_annotation_path = os.path.join(test_out_annotation_dir, self.replace_extension(image_ppts[0][0], '.txt'))
+                with open(out_annotation_path, 'w') as f:
+                    for ppts in image_ppts:
+                        f.write(' '.join(str(ppt) for ppt in ppts[1:]))
+
+            else:
+                image_url = self.annotations[image_name]['image_url']
+                self.download_image(image_url, os.path.join(self.images_folder, 'val'))    
+                #write to txt file
+                validation_out_annotation_dir = self.valid_path(os.path.join(self.labels_folder, 'val'))
+                out_annotation_path = os.path.join(validation_out_annotation_dir, self.replace_extension(image_ppts[0][0], '.txt'))
+                with open(out_annotation_path, 'w') as f:
+                    for ppts in image_ppts:
+                        f.write(' '.join(str(ppt) for ppt in ppts[1:]))
+        print('All done!')  
+
 
     def rectjson_to_yoloTxt(self):
         self.ppts = []
