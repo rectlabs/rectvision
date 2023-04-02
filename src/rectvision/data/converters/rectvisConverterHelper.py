@@ -466,7 +466,7 @@ class GenerateAnnotation():
                 image_url = self.annotations[image_name]['image_url']
                 self.download_image(image_url, os.path.join(self.validation_path, 'images'))    
                 #write to txt file
-                validation_out_annotation_dir = self.valid_path(os.path.join(self.labels_folder, 'labels'))
+                validation_out_annotation_dir = self.valid_path(os.path.join(self.validation_path, 'labels'))
                 out_annotation_path = os.path.join(validation_out_annotation_dir, self.replace_extension(image_ppts[0][0], '.txt'))
                 with open(out_annotation_path, 'w') as f:
                     for ppts in image_ppts:
