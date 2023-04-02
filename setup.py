@@ -8,7 +8,7 @@ here = os.path.abspath(os.path.dirname(__file__))
 with codecs.open(os.path.join(here, "README.md"), encoding="utf-8") as fh:
     long_description = "\n" + fh.read()
 
-VERSION = '3.0.59'
+VERSION = '3.0.60'
 DESCRIPTION = 'A low-code tool to help create your own AI'
 LONG_DESCRIPTION = 'A package that allows to build your own computer visions and NLP systems'
 
