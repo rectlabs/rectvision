@@ -167,7 +167,6 @@ class GenerateAnnotation():
                     point_y = [coord[1] for coord in point]
                     x_min, y_min, x_max, y_max = min(point_x), min(point_y), max(point_x), max(point_y)
                     image_ppts.append([current_img_path, label, self.shape_type, [[x_min, y_min], [x_max, y_max]]])
-                self.ppts.append(image_ppts)
                 
             
             elif self.export_format == 'darknet-txt':
@@ -184,7 +183,6 @@ class GenerateAnnotation():
                                         np.abs(y_center)/current_img_height, 
                                         np.abs(width)/current_img_width, 
                                         np.abs(height)/current_img_height, '\n' ])
-                self.ppts.append(image_ppts)
                 
 
             elif self.export_format == 'yolo-txt':
@@ -198,7 +196,6 @@ class GenerateAnnotation():
                     x_center, y_center,  = (x_min + x_max)/2, (y_min + y_max)/2
                     image_ppts.append([current_img_path, label_id, x_center/current_img_width, 
                                        y_center/current_img_height, width/current_img_width, height/current_img_height, '\n' ])
-                self.ppts.append(image_ppts)
 
             elif self.export_format == "yolo-seg-txt":
                  for idx, point in enumerate(points):
@@ -217,7 +214,6 @@ class GenerateAnnotation():
                     pre_data.extend(pk)
                     pre_data.append('\n')
                     image_ppts.append(pre_data)
-                self.ppts.append(image_ppts)
 
             elif self.export_format == 'yolov3-keras-txt':
                 for idx, point in enumerate(points):
@@ -227,7 +223,6 @@ class GenerateAnnotation():
                     point_y = [coord[1] for coord in point]
                     x_min, y_min, x_max, y_max = min(point_x), min(point_y), max(point_x), max(point_y)
                     image_ppts.append([current_img_path, x_min, y_min, x_max, y_max, label_id])
-                self.ppts.append(image_ppts)
             
             elif self.export_format == 'xml':
                 for idx, point in enumerate(points):
@@ -238,7 +233,6 @@ class GenerateAnnotation():
                     image_ppts.append([current_img_path, current_img_width, 
                                         current_img_height, current_img_depth,
                                         label, self.shape_type, x_min, x_max, y_min, y_max])
-                self.ppts.append(image_ppts)
 
             elif self.export_format == 'keras-retinanet-csv':
                 for idx, point in enumerate(points):
@@ -247,7 +241,6 @@ class GenerateAnnotation():
                     point_y = [coord[1] for coord in point]
                     x_min, y_min, x_max, y_max = min(point_x), min(point_y), max(point_x), max(point_y)
                     image_ppts.append([current_img_path, x_min, y_min, x_max, y_max, label])
-                self.ppts.append(image_ppts)
 
             elif self.export_format == 'tf-csv':
                 for idx, point in enumerate(points):
@@ -259,7 +252,7 @@ class GenerateAnnotation():
                     image_ppts.append([current_img_path, label,
                                         current_img_width, current_img_height,
                                         x_min, y_min, x_max, y_max])
-                self.ppts.append(image_ppts)
+            self.ppts.append(image_ppts)
 
        
     def valid_path(self, path):
