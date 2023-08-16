@@ -23,9 +23,12 @@ class Yolov5():
     def setup(self):
         self.git_clone("https://github.com/ultralytics/yolov5")
         # copy to yolov5 in project_dir
-        shutil.copytree('yolov5', os.path.join(self.project_dir, 'yolov5'))
-        os.chdir(os.path.join(self.project_dir, "yolov5"))
-        subprocess.run([sys.executable, "-m", "pip", "install", "-qr", "requirements.txt"])
+        try:
+          shutil.copytree('yolov5', os.path.join(self.project_dir, 'yolov5'))
+          os.chdir(os.path.join(self.project_dir, "yolov5"))
+          subprocess.run([sys.executable, "-m", "pip", "install", "-qr", "requirements.txt"])
+        except Exception as err:
+          pass
 
     def no_setup(self):
         os.chdir(os.path.join(self.project_dir, "yolov5"))
