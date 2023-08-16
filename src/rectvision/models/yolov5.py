@@ -22,6 +22,7 @@ class Yolov5():
         self.labels = labels
         self.project_name = project_name
         self.project_dir = self.valid_path(project_dir)
+        self.outdir = None
 
     def valid_path(self, path):
         isExist = os.path.exists(path)
@@ -145,8 +146,8 @@ class Yolov5():
       if process.returncode == 0:
           print('Inference completed successfully!') 
           print(process.stdout)   
-          shutil.copytree(os.path.join(self.project_dir, "yolov5/runs/detect", self.project_name+'_detections'), self.out_dir)
-          print('Check {} and {} for detections and annotations generated'.format(os.path.join(self.project_dir, "yolov5/runs/train", self.project_name+'_detections'), self.out_dir))
+          shutil.copytree(os.path.join(self.project_dir, "yolov5/runs/detect", self.project_name+'_detections'), self.outdir)
+          print('Check {} and {} for detections and annotations generated'.format(os.path.join(self.project_dir, "yolov5/runs/train", self.project_name+'_detections'), self.outdir))
 
       else:
           print('Inference could not be completed. Check error below for more details')
