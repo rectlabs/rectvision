@@ -41,7 +41,7 @@ class RectvisionConverter():
             self.token = getpass.getpass('Enter Token: ')
         else:
             self.token = token
-        self.endpoint = "https://test.backend.app.rectvision.com/api/v1/"
+        self.endpoint = "https://backend.app.rectvision.com/api/v1/"
         base_url = self.endpoint + 'projects/decode-token?token='
         request_url = base_url + self.token
         self.login_response = requests.get(request_url)
