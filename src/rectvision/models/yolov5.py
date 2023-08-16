@@ -1,8 +1,5 @@
-import subprocess
-import os
-import sys
-import yaml
-import shutil
+import subprocess, os, random, sys, math, yaml, shutil
+
 
 def otp(length = 5) :
     # Declare a digits variable 
@@ -132,14 +129,14 @@ class Yolov5():
           print(process.stderr)
         
 
-    def inference(self, images, out_dir, confidence= 0.3, iou_thres = 0.3):
+    def inference(self, images, out_dir, img_size = 416, confidence= 0.3, iou_thres = 0.3):
       self.outdir =out_dir + '/' + otp()
       self.detect_model = os.path.join(self.project_dir, "yolov5/detect.py")
       self.model_weights = os.path.join(self.project_dir, "yolov5/runs/train", self.project_name, "weights/best.pt")
       print('Inference in progress...')
       process = subprocess.run(["python", self.detect_model, 
                         "--source", images,
-                        "--img",  416,
+                        "--img",  img_size,
                         "--weights", self.model_weights,
                         "--conf", str(confidence),
                         "--iou-thres", str(iou_thres),
