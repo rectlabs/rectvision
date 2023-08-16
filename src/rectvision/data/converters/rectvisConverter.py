@@ -108,8 +108,8 @@ class RectvisionConverter():
 
             rearranged_annotations[image_name]['image_id'] = annon_prop['file_id']
             rearranged_annotations[image_name]['image_url'] = annon_prop['file']['url']
-            rearranged_annotations[image_name]['image_height'] =annon_prop['image_height']
-            rearranged_annotations[image_name]['image_width'] = annon_prop['image_width']
+            rearranged_annotations[image_name]['image_height'] =annon_prop['metadata']['height']
+            rearranged_annotations[image_name]['image_width'] = annon_prop['metadata']['width']
             rearranged_annotations[image_name]['image_channels'] = 3
             rearranged_annotations[image_name]['points'].append(annon_prop['points'])
             rearranged_annotations[image_name]['labels'].append(annon_prop['label']['value'])
