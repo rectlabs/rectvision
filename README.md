@@ -22,3 +22,6 @@ Alternatively, you may download the wheels from [PyPi](https://pypi.org/project/
 ```
 visit: https://docs.rectvision.com/docs/intro
 ```
+
+
+<!-- Security scan triggered at 2025-09-02 02:38:12 -->
